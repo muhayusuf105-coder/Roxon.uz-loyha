@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, Sparkles, User, RefreshCw, Trash2, ArrowLeft, Lightbulb, Check, ShieldAlert } from 'lucide-react';
+import { Send, Bot, Sparkles, User, RefreshCw, Trash2, ArrowLeft, Lightbulb, Check, ShieldAlert, Plus, MessageSquare, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Message {
@@ -14,41 +14,128 @@ interface Message {
   timestamp: string;
 }
 
+interface ChatSession {
+  id: string;
+  title: string;
+  messages: Message[];
+  createdAt: string;
+}
+
+interface StarterQuestion {
+  title: string;
+  prompt: string;
+  description: string;
+}
+
 interface AiChatPageProps {
   onBackToStore: () => void;
   userName?: string;
 }
 
 export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem('roxon_ai_chat');
+  // 1. Multiple Chat Sessions from LocalStorage (Maximum 10)
+  const [sessions, setSessions] = useState<ChatSession[]>(() => {
+    const saved = localStorage.getItem('roxon_ai_sessions');
     if (saved) {
       try {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
       } catch (e) {
-        // Fallback
+        // Fallback below
       }
     }
     return [
       {
-        id: 'welcome',
-        role: 'assistant',
-        content: `Assalomu alaykum${userName ? `, ${userName}` : ''}! 🛠️\n\nMen **ROXON** kompaniyasining professional sun'iy intellekt maslahatchisiman. Sizga sanoat elektr asboblari, generator quvvatini hisoblash, suv nasoslari yoki qurilish texnikasi bo'yicha qanday amaliy va foydali maslahat kerak?\n\nMenga quyidagicha savollar berishingiz mumkin:\n- *"Menga generator kVt quvvatini hisoblab bering."*\n- *"FlowMaster P-30 nasosi qanday quvvatga ega?"*\n- *"Drel Ultra Drill X-200 kafolati qancha?"*`,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        id: 'session_default',
+        title: 'Boshlang\'ich chat',
+        messages: [
+          {
+            id: 'welcome',
+            role: 'assistant',
+            content: `Assalomu alaykum${userName ? `, ${userName}` : ''}! 🛠️\n\nMen **ROXON** kompaniyasining professional sun'iy intellekt maslahatchisiman. Sizga sanoat elektr asboblari, generator quvvatini hisoblash, suv nasoslari yoki qurilish texnikasi bo'yicha qanday amaliy va foydali maslahat kerak?\n\nMenga quyidagicha savollar berishingiz mumkin:\n- *"Menga generator kVt quvvatini hisoblab bering."*\n- *"FlowMaster P-30 nasosi qanday quvvatga ega?"*\n- *"Drel Ultra Drill X-200 kafolati qancha?"*`,
+            timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+          }
+        ],
+        createdAt: new Date().toISOString()
       }
     ];
   });
+
+  const [activeSessionId, setActiveSessionId] = useState<string>(() => {
+    const savedActive = localStorage.getItem('roxon_ai_active_session_id');
+    if (savedActive) {
+      return savedActive;
+    }
+    return 'session_default';
+  });
+
+  // 2. Starter Prompts from LocalStorage (Customizable)
+  const [starters, setStarters] = useState<StarterQuestion[]>(() => {
+    const saved = localStorage.getItem('roxon_ai_starters');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+      } catch (e) {}
+    }
+    return [
+      {
+        title: "⚡ Generator hisoblash",
+        prompt: "Menga generator quvvatini professional tarzda hisoblab ber, uyda muzlatgich, televizor va konditsioner bor.",
+        description: "Yuklanishni o'lchash"
+      },
+      {
+        title: "💧 Nasos tanlash",
+        prompt: "Quduqdan 20 metr chuqurlikdan suv tortish uchun qaysi model mos keladi va uning sarfi qanday?",
+        description: "Tavsiyalarni ko'rish"
+      },
+      {
+        title: "🛠️ Kafolat va Servis",
+        prompt: "Roxon uskunalariga necha oy kafolat beriladi va sotuvdan keyingi servis tizimi qanday ishlaydi?",
+        description: "Qoidalar bilan tanishish"
+      },
+      {
+        title: "📦 Tavsiyalar olish",
+        prompt: "ROXON Ultra Drill X-200 professional drelining qanday ustunlik jihatlari bor va narxi qancha?",
+        description: "Drel xususiyatlari"
+      }
+    ];
+  });
+
+  // Adding Custom Prompts State
+  const [isAddingStarter, setIsAddingStarter] = useState(false);
+  const [newStarterTitle, setNewStarterTitle] = useState('');
+  const [newStarterPrompt, setNewStarterPrompt] = useState('');
+  const [newStarterDesc, setNewStarterDesc] = useState('');
 
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Save chat to local storage
+  // Sync to Storage
   useEffect(() => {
-    localStorage.setItem('roxon_ai_chat', JSON.stringify(messages));
-  }, [messages]);
+    localStorage.setItem('roxon_ai_sessions', JSON.stringify(sessions));
+  }, [sessions]);
 
-  // Scroll to bottom
+  useEffect(() => {
+    localStorage.setItem('roxon_ai_active_session_id', activeSessionId);
+  }, [activeSessionId]);
+
+  useEffect(() => {
+    localStorage.setItem('roxon_ai_starters', JSON.stringify(starters));
+  }, [starters]);
+
+  // Find currently active session and fallback
+  const currentSession = sessions.find(s => s.id === activeSessionId) || sessions[0] || {
+    id: 'session_default',
+    title: 'Boshlang\'ich chat',
+    messages: []
+  };
+  const messages = currentSession.messages;
+
+  // Scroll to bottom helper
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -56,6 +143,63 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isLoading]);
+
+  // Multiple session handler: create action
+  const handleCreateSession = () => {
+    if (sessions.length >= 10) {
+      alert("⚠️ Maksimal suhbatlar limiti (10) ga yetdingiz. Yangisini ochish uchun eskisini o'chiring!");
+      return;
+    }
+
+    const newSessionId = 'session_' + Date.now();
+    const newSessionName = `Suhbat #${sessions.length + 1}`;
+    const newSession: ChatSession = {
+      id: newSessionId,
+      title: newSessionName,
+      messages: [
+        {
+          id: 'welcome_' + Date.now(),
+          role: 'assistant',
+          content: `Assalomu alaykum! Yangi suhbatga xush kelibsiz. Sanoat asboblari va ROXON mahsulotlari haqida so'rang yoki mavzulardan birini tanlang.`,
+          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }
+      ],
+      createdAt: new Date().toISOString()
+    };
+
+    setSessions(prev => [...prev, newSession]);
+    setActiveSessionId(newSessionId);
+  };
+
+  // Multiple session handler: delete single session
+  const handleDeleteSession = (idToDelete: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    
+    if (sessions.length <= 1) {
+      // Clear the single remaining session
+      const resetMsg: Message = {
+        id: 'welcome_' + Date.now(),
+        role: 'assistant',
+        content: `Suhbat tozalab yuborildi. Menga sanoat doirasidagi elektr sohasidagi va ROXON uskunalaridagi har qanday qiziqtirgan texnik savolingizni berishingiz mumkin!`,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+      setSessions([{
+        id: 'session_default',
+        title: 'Boshlang\'ich chat',
+        messages: [resetMsg],
+        createdAt: new Date().toISOString()
+      }]);
+      setActiveSessionId('session_default');
+      return;
+    }
+
+    const remaining = sessions.filter(s => s.id !== idToDelete);
+    setSessions(remaining);
+
+    if (activeSessionId === idToDelete) {
+      setActiveSessionId(remaining[0].id);
+    }
+  };
 
   const handleSendMessage = async (textToSend?: string) => {
     const text = (textToSend || inputMessage).trim();
@@ -72,12 +216,29 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
 
+    // Auto rename active session's title if generic based on the user's first prompt
+    let updatedTitle = currentSession.title;
+    if (currentSession.title.startsWith('Yangi chat') || currentSession.title.startsWith('Suhbat #') || currentSession.title === 'Boshlang\'ich chat') {
+      updatedTitle = text.length > 25 ? text.slice(0, 22) + '...' : text;
+    }
+
     const updatedMessages = [...messages, newMessage];
-    setMessages(updatedMessages);
+
+    // Optimistically update state
+    setSessions(prev => prev.map(s => {
+      if (s.id === currentSession.id) {
+        return {
+          ...s,
+          title: updatedTitle,
+          messages: updatedMessages
+        };
+      }
+      return s;
+    }));
+
     setIsLoading(true);
 
     try {
-      // Map message history to payload expected by server.ts
       const apiMessages = updatedMessages.map(msg => ({
         role: msg.role,
         content: msg.content
@@ -98,67 +259,72 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
 
       const data = await res.json();
       
-      setMessages(prev => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: data.response,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      const assistantMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: data.response,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      setSessions(prev => prev.map(s => {
+        if (s.id === currentSession.id) {
+          return {
+            ...s,
+            messages: [...updatedMessages, assistantMessage]
+          };
         }
-      ]);
+        return s;
+      }));
     } catch (err: any) {
       console.error(err);
-      setMessages(prev => [
-        ...prev,
-        {
-          id: (Date.now() + 1).toString(),
-          role: 'assistant',
-          content: `⚠️ **Xatolik yuz berdi:** ${err.message || 'Server qatlamiga ulana olmadik. Tarmoq aloqasini tekshiring yoki sozlamalardan API kalitini kiritganingizni tasdiqlang.'}`,
-          timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      
+      const rawErrorMsg = err.message || 'Server qatlamiga ulana olmadik. Vercel loyihangizda GEMINI_API_KEY kaliti mavjudligini tasdiqlang.';
+      const cleanErrorMsg = rawErrorMsg.startsWith('⚠️') 
+        ? rawErrorMsg 
+        : `⚠️ **Xatolik yuz berdi:** ${rawErrorMsg}`;
+
+      const errorMessage: Message = {
+        id: (Date.now() + 1).toString(),
+        role: 'assistant',
+        content: cleanErrorMsg,
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      setSessions(prev => prev.map(s => {
+        if (s.id === currentSession.id) {
+          return {
+            ...s,
+            messages: [...updatedMessages, errorMessage]
+          };
         }
-      ]);
+        return s;
+      }));
     } finally {
       setIsLoading(false);
     }
   };
 
-  const handleClearChat = () => {
-    if (window.confirm("Rostdan ham sabahtlar tarixini tozalashni xohlaysizmi?")) {
+  const handleClearCurrentChat = () => {
+    if (window.confirm("Rostdan ham ushbu suhbat tarixini tozalashni xohlaysizmi?")) {
       const resetMsg: Message = {
-        id: 'welcome',
+        id: 'welcome_' + Date.now(),
         role: 'assistant',
-        content: `Suhbat tozalab yuborildi. Menga sanoat dagerasida elektr sohasidagi va ROXON uskunalaridagi har qanday qiziqtirgan texnik savolingizni berishingiz mumkin!`,
+        content: `Suhbat tozalab yuborildi. Sanoat asboblari va ROXON mahsulotlari haqida so'rang!`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
-      setMessages([resetMsg]);
+      setSessions(prev => prev.map(s => {
+        if (s.id === currentSession.id) {
+          return {
+            ...s,
+            messages: [resetMsg]
+          };
+        }
+        return s;
+      }));
     }
   };
 
-  const starterQuestions = [
-    {
-      title: "⚡ Generator hisoblash",
-      prompt: "Menga generator quvvatini professional tarzda hisoblab ber, uyda muzlatgich, televizor va konditsioner bor.",
-      description: "Yuklanishni o'lchash"
-    },
-    {
-      title: "💧 Nasos tanlash",
-      prompt: "Quduqdan 20 metr chuqurlikdan suv tortish uchun qaysi model mos keladi va uning sarfi qanday?",
-      description: "Tavsiyalarni ko'rish"
-    },
-    {
-      title: "🛠️ Kafolat va Servis",
-      prompt: "Roxon uskunalariga necha oy kafolat beriladi va sotuvdan keyingi servis tizimi qanday ishlaydi?",
-      description: "Qoidalar bilan tanishish"
-    },
-    {
-      title: "📦 Tavsiyalar olish",
-      prompt: "ROXON Ultra Drill X-200 professional drelining qanday ustunlik jihatlari bor va narxi qancha?",
-      description: "Drel xususiyatlari"
-    }
-  ];
-
-  // A light helper function to parse markdown features: lists, bold text, new lines, tables
+  // Markdown parsing engines
   const renderParsedMarkdown = (rawText: string) => {
     if (!rawText) return null;
 
@@ -167,9 +333,8 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
     return paragraphs.map((para, index) => {
       const trimmed = para.trim();
 
-      // Check for table row (e.g. starts with | and is closed with |)
+      // Check table rows
       if (trimmed.startsWith('|') && trimmed.endsWith('|')) {
-        // If it's the header separator line containing dashes, ignore it
         if (trimmed.includes('---')) {
           return null;
         }
@@ -194,7 +359,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
         );
       }
 
-      // Check for list item
+      // Check bullet items
       if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
         const itemContent = trimmed.slice(1).trim();
         return (
@@ -204,7 +369,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
         );
       }
 
-      // Check for numbered item
+      // Numbered items
       const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
       if (numMatch) {
         return (
@@ -214,7 +379,6 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
         );
       }
 
-      // Default paragraph
       return (
         <p key={index} className="leading-relaxed text-sm mb-2 text-gray-300 min-h-[1.25rem]">
           {parseInlineFormatting(para)}
@@ -223,19 +387,15 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
     });
   };
 
-  // Parses inline `**bold**` and `*italic*` and backticks for short code
   const parseInlineFormatting = (text: string) => {
     if (!text) return '';
 
-    // Split by ** for bold
     const boldParts = text.split(/\*\*([\s\S]*?)\*\*/g);
     return boldParts.map((part, idx) => {
-      // Every odd index is content inside **...**
       if (idx % 2 === 1) {
         return <strong key={idx} className="font-extrabold text-amber-500">{part}</strong>;
       }
 
-      // Inside normal part, split by backticks `...` for inline code
       const codeParts = part.split(/`([\s\S]*?)`/g);
       return codeParts.map((subPart, subIdx) => {
         if (subIdx % 2 === 1) {
@@ -246,142 +406,337 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
     });
   };
 
+  const isLimitReached = sessions.length >= 10;
+
   return (
-    <div className="min-h-screen bg-neutral-950 text-white flex flex-col font-sans" id="ai-chat-view">
-      {/* Top Bar Navigation */}
-      <div className="sticky top-0 z-40 bg-neutral-900/90 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+    <div className="h-screen bg-neutral-950 text-white flex flex-col font-sans overflow-hidden" id="ai-chat-view">
+      
+      {/* 1. Header Navigation */}
+      <div className="sticky top-0 z-40 bg-neutral-900/90 backdrop-blur-md border-b border-white/5 px-4 sm:px-6 py-3.5 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
           <button
             onClick={onBackToStore}
-            className="flex items-center gap-2 text-sm font-medium text-gray-400 hover:text-white bg-neutral-800 hover:bg-neutral-750 px-3.5 py-2 rounded-xl transition-all active:scale-95"
+            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-white bg-neutral-800 hover:bg-neutral-750 px-3 py-2 rounded-xl transition-all active:scale-95 shrink-0"
             title="Sotuv do'koniga qaytish"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-3.5 h-3.5" />
             <span>Do'kon</span>
           </button>
           
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-amber-500/10 border border-amber-500/30 rounded-2xl flex items-center justify-center text-amber-500 relative">
-              <Bot className="w-5.5 h-5.5" />
-              <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full border-2 border-neutral-950 animate-pulse"></span>
+          <div className="flex items-center gap-2 overflow-hidden">
+            <div className="w-8.5 h-8.5 sm:w-10 sm:h-10 bg-amber-500/10 border border-amber-500/30 rounded-xl sm:rounded-2xl flex items-center justify-center text-amber-500 relative shrink-0">
+              <Bot className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
+              <span className="absolute bottom-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-500 rounded-full border-2 border-neutral-950 animate-pulse"></span>
             </div>
-            <div>
+            <div className="overflow-hidden">
               <div className="flex items-center gap-1.5">
-                <h1 className="text-sm font-black tracking-wide text-gray-100">ROXON AI</h1>
-                <span className="text-[10px] bg-amber-500/15 text-amber-400 px-2 py-0.5 rounded-full font-bold uppercase tracking-widest border border-amber-500/10">EXPERT</span>
+                <h1 className="text-xs sm:text-sm font-black tracking-wide text-gray-100 truncate">ROXON AI</h1>
+                <span className="text-[9px] bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border border-amber-500/10 shrink-0">EXPERT</span>
               </div>
-              <p className="text-[11px] text-gray-450">Aqlli maslahatchi va texnik yordamchi</p>
+              <p className="text-[10px] sm:text-[11px] text-gray-400 truncate hidden sm:block">Sanoat va texnik yordamchi AI</p>
             </div>
           </div>
         </div>
 
+        {/* Header Action Buttons (Create Session & Clear current) */}
         <div className="flex items-center gap-2">
+          {/* Create chat button with dynamic visual status & limit protection */}
+          <button
+            onClick={handleCreateSession}
+            disabled={isLimitReached}
+            className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all active:scale-95 ${
+              isLimitReached 
+                ? 'bg-neutral-900 border-white/5 text-gray-500 cursor-not-allowed opacity-50' 
+                : 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border-amber-500/25'
+            }`}
+            title={isLimitReached ? "Maksimal suhbatlar soniga yetildi" : "Yangi suhbat ochish (Max 10)"}
+          >
+            <Plus className="w-3.5 h-3.5" />
+            <span className="hidden xs:inline">Yangi suhbat</span>
+          </button>
+
           {messages.length > 1 && (
             <button
-              onClick={handleClearChat}
-              className="p-2.5 bg-neutral-850 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-colors text-gray-400"
-              title="Suhbatni tozalash"
+              onClick={handleClearCurrentChat}
+              className="p-2 bg-neutral-850 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-colors text-gray-400"
+              title="Ushbu suhbatni tozalash"
             >
-              <Trash2 className="w-4.5 h-4.5" />
+              <Trash2 className="w-4 h-4" />
             </button>
           )}
         </div>
       </div>
 
-      {/* Main chat layout */}
-      <div className="flex-1 max-w-5xl w-full mx-auto px-4 py-6 flex flex-col md:flex-row gap-6 h-[calc(100vh-130px)]">
+      {/* 2. Main Layout (Three Columns / Nested Sections) */}
+      <div className="flex-1 w-full max-w-7xl mx-auto px-4 py-4 flex flex-col lg:flex-row gap-5 overflow-hidden h-full">
         
-        {/* Left side sidebar: Information & Starter Prompts */}
-        <div className="w-full md:w-80 flex flex-col gap-4 hidden md:flex shrink-0">
-          <div className="bg-neutral-900 border border-white/5 rounded-2xl p-5">
-            <h2 className="text-sm font-bold text-amber-500 flex items-center gap-2 mb-3">
-              <Lightbulb className="w-4 h-4" />
-              Qanday yordam bera olaman?
-            </h2>
-            <p className="text-xs text-gray-400 leading-relaxed">
-              ROXON AI yordamida elektr asboblari, yuklanish kVt miqdorlari va suv nasoslarini hisoblang. Mahsulotlarimiz bo'sh katakda to'liq tushuntirib beriladi.
-            </p>
-            
-            <div className="mt-4 pt-4 border-t border-white/5 space-y-2.5 text-xs text-gray-400">
-              <div className="flex items-start gap-2">
-                <Check className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                <span>To'g'ri generator tanlash</span>
+        {/* LEFT SIDEBAR: Active Chats list (LocalStorage with limit display) */}
+        <div className="w-full lg:w-64 flex flex-col gap-4 hidden lg:flex shrink-0 overflow-y-auto pr-1">
+          
+          {/* Active Chats sessions Box (Maximum 10 limit) */}
+          <div className="bg-neutral-900 border border-white/5 rounded-2xl p-4 flex flex-col gap-2 shrink-0">
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-xs font-bold text-gray-300 uppercase tracking-widest flex items-center gap-1.5">
+                <MessageSquare className="w-3.5 h-3.5 text-amber-500" />
+                Suhbatlaringiz
+              </h2>
+              <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${isLimitReached ? 'bg-amber-500/20 text-amber-400' : 'bg-neutral-800 text-gray-400'}`}>
+                {sessions.length} / 10
+              </span>
+            </div>
+
+            {/* Warning banner if max reached */}
+            {isLimitReached && (
+              <div className="p-2.5 bg-amber-500/10 border border-amber-500/20 text-[10px] text-amber-400 leading-normal rounded-xl">
+                Maksimal limit (10) ga yetdingiz. Yangisini ochish uchun eskisini o'chiring.
               </div>
-              <div className="flex items-start gap-2">
-                <Check className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                <span>Texnik parametrlarni taqqoslash</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <Check className="w-3.5 h-3.5 text-amber-500 shrink-0 mt-0.5" />
-                <span>Servis va qo'llab-quvvatlash masalalari</span>
-              </div>
+            )}
+
+            {/* List of active sessions */}
+            <div className="space-y-1.5 max-h-[220px] overflow-y-auto pr-1">
+              {sessions.map((session) => {
+                const isActive = session.id === activeSessionId;
+                return (
+                  <div
+                    key={session.id}
+                    onClick={() => setActiveSessionId(session.id)}
+                    className={`group/sess flex items-center justify-between p-2.5 rounded-xl border text-xs font-medium cursor-pointer transition-all ${
+                      isActive 
+                        ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' 
+                        : 'bg-neutral-850 border-transparent hover:border-white/5 text-gray-400 hover:text-white'
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate pr-2">
+                      <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-500' : 'text-gray-500'}`} />
+                      <span className="truncate">{session.title}</span>
+                    </div>
+
+                    <button
+                      onClick={(e) => handleDeleteSession(session.id, e)}
+                      className="p-1 text-gray-500 rounded-lg hover:bg-red-500/10 hover:text-red-400 transition-all opacity-0 group-hover/sess:opacity-100"
+                      title="Suhbatni o'chirish"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
-          <div className="bg-neutral-900 border border-white/5 rounded-2xl p-5 flex-1 flex flex-col justify-between">
+          {/* Quick Informational block */}
+          <div className="bg-neutral-900 border border-white/5 rounded-2xl p-4 shrink-0">
+            <h2 className="text-xs font-bold text-amber-500 flex items-center gap-1.5 mb-2">
+              <Lightbulb className="w-3.5 h-3.5" />
+              Yordamchi Qo'llanma
+            </h2>
+            <p className="text-[11px] text-gray-450 leading-relaxed">
+              Yangi suhbatlarni ochishingiz mumkin, tarixingiz qurilmangizda saqlanadi. Maksimal 10 tagacha chat ochishga ruxsat bor.
+            </p>
+          </div>
+        </div>
+
+        {/* MID COLUMN: Editable Starter recommendation prompts (CRUD) */}
+        <div className="w-full lg:w-72 flex flex-col gap-4 hidden lg:flex shrink-0 overflow-y-auto pr-1">
+          <div className="bg-neutral-900 border border-white/5 rounded-2xl p-4 flex flex-col justify-between flex-1">
             <div>
-              <h3 className="text-xs font-bold text-gray-300 uppercase tracking-wider mb-3">Mashhur so'rovlar</h3>
-              <div className="space-y-2">
-                {starterQuestions.map((q, idx) => (
+              <div className="flex items-center justify-between mb-3 border-b border-white/5 pb-2">
+                <h3 className="text-xs font-bold text-gray-300 uppercase tracking-widest flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                  Sizning So'rovlaringiz
+                </h3>
+              </div>
+
+              {/* Dynamic scrollable starters list with deletion support */}
+              <div className="space-y-2 max-h-[300px] overflow-y-auto pr-1">
+                {starters.length === 0 ? (
+                  <div className="p-4 text-center border border-dashed border-white/5 rounded-xl text-gray-500 text-[11px] leading-relaxed">
+                    Tavsiya so'rovlar o'chirildi. O'zingiz qidiradigan yangi mavzu yozib qo'shing.
+                  </div>
+                ) : (
+                  starters.map((q, idx) => (
+                    <div key={idx} className="group/starter relative flex items-stretch gap-1.5">
+                      <button
+                        onClick={() => handleSendMessage(q.prompt)}
+                        className="flex-1 text-left p-3 rounded-xl bg-neutral-850 hover:bg-neutral-800 transition-all border border-white/5 hover:border-amber-500/25 group/btn"
+                      >
+                        <div className="text-xs font-bold text-gray-200 group-hover/btn:text-amber-400 transition-colors mb-0.5">{q.title}</div>
+                        <div className="text-[10px] text-gray-500 line-clamp-1">{q.description}</div>
+                      </button>
+                      
+                      {/* Real Deletion capability matches user intent to delete/add starter prompts */}
+                      <button
+                        onClick={() => {
+                          setStarters(prev => prev.filter((_, i) => i !== idx));
+                        }}
+                        className="p-2 leading-none bg-neutral-850 hover:bg-red-500/10 hover:text-red-400 rounded-xl transition-all text-gray-500 hover:border-red-500/10 border border-white/5 flex items-center justify-center.5 group-hover/starter:opacity-100 opacity-80"
+                        title="Ushbu so'rovni o'chirib tashlash"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              {/* Add starter custom prompt form (CRUD creator) */}
+              <div className="mt-4 pt-3 border-t border-white/5">
+                {!isAddingStarter ? (
                   <button
-                    key={idx}
-                    onClick={() => handleSendMessage(q.prompt)}
-                    className="w-full text-left p-3 rounded-xl bg-neutral-850 hover:bg-neutral-800 transition-all border border-white/5 hover:border-amber-500/25 group"
+                    type="button"
+                    onClick={() => setIsAddingStarter(true)}
+                    className="w-full py-2 px-3 rounded-xl bg-neutral-800 hover:bg-neutral-750 text-gray-300 text-xs font-bold flex items-center justify-center gap-1.5 transition-all"
                   >
-                    <div className="text-xs font-bold text-gray-200 group-hover:text-amber-400 transition-colors mb-0.5">{q.title}</div>
-                    <div className="text-[10px] text-gray-500">{q.description}</div>
+                    <Plus className="w-3.5 h-3.5 text-amber-500" />
+                    <span>Yangi so'rov qo'shish</span>
                   </button>
-                ))}
+                ) : (
+                  <div className="mt-2 bg-neutral-950 p-3 rounded-xl border border-white/5 space-y-2.5">
+                    <div>
+                      <label className="text-[10px] text-gray-400 font-bold block mb-1">So'rov sarlavhasi (Masalan: Suv tortish)</label>
+                      <input
+                        type="text"
+                        value={newStarterTitle}
+                        onChange={(e) => setNewStarterTitle(e.target.value)}
+                        placeholder="Sarlavha..."
+                        className="w-full text-xs bg-neutral-900 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-amber-500/40"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-gray-400 font-bold block mb-1">To'liq beriladigan savol (Prompt)</label>
+                      <textarea
+                        value={newStarterPrompt}
+                        onChange={(e) => setNewStarterPrompt(e.target.value)}
+                        placeholder="Quvvat o'lchovlari..."
+                        rows={2}
+                        className="w-full text-xs bg-neutral-900 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-amber-500/40 resize-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-[10px] text-gray-400 font-bold block mb-1">Kichik tavsif (Description)</label>
+                      <input
+                        type="text"
+                        value={newStarterDesc}
+                        onChange={(e) => setNewStarterDesc(e.target.value)}
+                        placeholder="Tafsilotlar..."
+                        className="w-full text-xs bg-neutral-900 border border-white/10 rounded-lg p-2 text-white outline-none focus:border-amber-500/40"
+                      />
+                    </div>
+                    <div className="flex gap-2 justify-end">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setIsAddingStarter(false);
+                          setNewStarterTitle('');
+                          setNewStarterPrompt('');
+                          setNewStarterDesc('');
+                        }}
+                        className="px-2 py-1 rounded bg-neutral-800 hover:bg-neutral-750 text-gray-400 text-[10px] font-semibold transition-colors"
+                      >
+                        Bekor qilish
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!newStarterTitle.trim() || !newStarterPrompt.trim()) {
+                            alert("Sarlavha va savol matni to'ldirilishi shart!");
+                            return;
+                          }
+                          setStarters(prev => [
+                            ...prev,
+                            {
+                              title: newStarterTitle.trim(),
+                              prompt: newStarterPrompt.trim(),
+                              description: newStarterDesc.trim() || "Tavsiyalarni ko'rish"
+                            }
+                          ]);
+                          setIsAddingStarter(false);
+                          setNewStarterTitle('');
+                          setNewStarterPrompt('');
+                          setNewStarterDesc('');
+                        }}
+                        className="px-2 py-1 rounded bg-amber-500 text-neutral-950 hover:bg-amber-400 text-[10px] font-bold transition-all"
+                      >
+                        Qo'shish
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
             <div className="mt-4 p-3 bg-neutral-950 rounded-xl border border-white/5 flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0" />
-              <p className="text-[10px] text-gray-500 leading-tight">Gemini sun'iy intellekti hisoblashlarda tavsiyaviy xarakterga ega.</p>
+              <ShieldAlert className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+              <p className="text-[10px] text-gray-550 leading-tight">Hisoblashlar taklif xarakteriga ega.</p>
             </div>
           </div>
         </div>
 
-        {/* Right side/Center: Messages list & input box */}
-        <div className="flex-1 flex flex-col bg-neutral-900 border border-white/5 rounded-3xl overflow-hidden shadow-2xl">
-          {/* Scrollable messages panel */}
-          <div className="flex-1 overflow-y-auto px-6 py-6 space-y-4 shadow-inner">
-            <AnimatePresence initial={false}>
-              {messages.map((msgRef) => (
-                <motion.div
-                  key={msgRef.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`flex gap-3.5 max-w-[85%] ${msgRef.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
-                >
-                  <div className={`w-8.5 h-8.5 rounded-full flex items-center justify-center shrink-0 border ${
-                    msgRef.role === 'user'
-                      ? 'bg-amber-500 text-neutral-950 border-amber-400 font-extrabold'
-                      : 'bg-neutral-800 text-amber-500 border-white/5'
-                  }`}>
-                    {msgRef.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
-                  </div>
-
-                  <div className="space-y-1 flex flex-col">
-                    <div className={`p-4 rounded-3xl ${
-                      msgRef.role === 'user'
-                        ? 'bg-amber-500 text-neutral-950 rounded-tr-none font-medium selection:bg-neutral-900 selection:text-white'
-                        : 'bg-neutral-850 border border-white/5 rounded-tl-none text-gray-200 selection:bg-amber-500 selection:text-neutral-950'
-                    }`}>
-                      {msgRef.role === 'user' ? (
-                        <p className="text-sm leading-relaxed whitespace-pre-wrap">{msgRef.content}</p>
-                      ) : (
-                        <div className="space-y-1">
-                          {renderParsedMarkdown(msgRef.content)}
-                        </div>
-                      )}
-                    </div>
-                    <span className={`text-[9px] px-1 text-gray-500 ${msgRef.role === 'user' ? 'text-right' : ''}`}>
-                      {msgRef.timestamp}
-                    </span>
-                  </div>
-                </motion.div>
+        {/* RIGHT SIDE / CONSOLE VIEW: Scrollable Messages List & Inputs */}
+        <div className="flex-1 flex flex-col bg-neutral-900 border border-white/5 rounded-3xl overflow-hidden shadow-2xl h-full">
+          
+          {/* Mobile responsive active session switcher */}
+          <div className="block lg:hidden px-4 py-2 border-b border-white/5 bg-neutral-950/40 flex items-center justify-between gap-2">
+            <span className="text-xs font-bold text-gray-400">Suhbat (Sessions):</span>
+            <select
+              value={activeSessionId}
+              onChange={(e) => setActiveSessionId(e.target.value)}
+              className="bg-neutral-800 border border-white/10 rounded-lg text-xs font-semibold text-white px-2 py-1 focus:outline-none focus:border-amber-500/40"
+            >
+              {sessions.map((s) => (
+                <option key={s.id} value={s.id}>
+                  {s.title} ({s.messages.length} xabar)
+                </option>
               ))}
+            </select>
+          </div>
+
+          {/* Messages pane: dynamically scales, stretches nicely without double scrolls */}
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-4 shadow-inner">
+            <AnimatePresence initial={false}>
+              {messages.length === 0 ? (
+                <div className="h-full flex flex-col items-center justify-center p-8 text-center text-gray-500 space-y-2">
+                  <Bot className="w-12 h-12 text-neutral-750 animate-pulse" />
+                  <p className="text-sm font-medium">Bu suhbat bo'sh. Savol matnini pastdan yo'llab muloqotni boshlang.</p>
+                </div>
+              ) : (
+                messages.map((msgRef) => (
+                  <motion.div
+                    key={msgRef.id}
+                    initial={{ opacity: 0, y: 15 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    // Increased maximum width to max-w-[92%] as requested for natural elegant spacious tagma-tag layouts
+                    className={`flex gap-3.5 max-w-[92%] sm:max-w-[88%] lg:max-w-[92%] ${msgRef.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
+                  >
+                    <div className={`w-8.5 h-8.5 rounded-full flex items-center justify-center shrink-0 border mt-1 ${
+                      msgRef.role === 'user'
+                        ? 'bg-amber-500 text-neutral-950 border-amber-400 font-extrabold shadow-md'
+                        : 'bg-neutral-800 text-amber-500 border-white/5'
+                    }`}>
+                      {msgRef.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                    </div>
+
+                    <div className="space-y-1 flex flex-col min-w-0 flex-1">
+                      <div className={`p-4 rounded-3xl shrink-0 ${
+                        msgRef.role === 'user'
+                          ? 'bg-amber-500 text-neutral-950 rounded-tr-none font-medium selection:bg-neutral-900 selection:text-white'
+                          : 'bg-neutral-850 border border-white/5 rounded-tl-none text-gray-200 selection:bg-amber-500 selection:text-neutral-950'
+                      }`}>
+                        {msgRef.role === 'user' ? (
+                          <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msgRef.content}</p>
+                        ) : (
+                          <div className="space-y-1 overflow-x-auto">
+                            {renderParsedMarkdown(msgRef.content)}
+                          </div>
+                        )}
+                      </div>
+                      <span className={`text-[9px] px-1 text-gray-500 ${msgRef.role === 'user' ? 'text-right' : ''}`}>
+                        {msgRef.timestamp}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))
+              )}
             </AnimatePresence>
 
             {isLoading && (
@@ -389,33 +744,35 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
                 <div className="w-8.5 h-8.5 rounded-full flex items-center justify-center shrink-0 bg-neutral-800 text-amber-500 border border-white/5 animate-spin">
                   <RefreshCw className="w-4 h-4" />
                 </div>
-                <div className="p-4 rounded-3xl rounded-tl-none bg-neutral-850 border border-white/5 flex items-center gap-2">
+                <div className="p-4 rounded-3xl rounded-tl-none bg-neutral-850 border border-white/5 flex items-center gap-2 shadow-sm">
                   <div className="flex gap-1.5 items-center">
                     <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
                     <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
                     <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                   </div>
-                  <span className="text-xs text-gray-400 font-medium">ROXON AI javob qaytarmoqda...</span>
+                  <span className="text-xs text-gray-400 font-medium">ROXON AI javob bermoqda...</span>
                 </div>
               </div>
             )}
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Prompt cards on ultra-small screens/mobile */}
-          <div className="md:hidden px-4 py-2 border-t border-white/5 flex gap-2 overflow-x-auto bg-neutral-950/60 shrink-0">
-            {starterQuestions.map((q, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSendMessage(q.prompt)}
-                className="whitespace-nowrap px-3.5 py-2 rounded-xl bg-neutral-900 border border-white/5 text-xs text-gray-300 font-medium shrink-0 active:scale-95"
-              >
-                {q.title}
-              </button>
-            ))}
-          </div>
+          {/* Quick preset cards on mobile devices */}
+          {starters.length > 0 && (
+            <div className="lg:hidden px-4 py-2 border-t border-white/5 flex gap-2 overflow-x-auto bg-neutral-950/60 shrink-0">
+              {starters.map((q, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSendMessage(q.prompt)}
+                  className="whitespace-nowrap px-3 py-1.5 rounded-xl bg-neutral-900 border border-white/5 text-xs text-gray-300 font-medium shrink-0 active:scale-95"
+                >
+                  {q.title}
+                </button>
+              ))}
+            </div>
+          )}
 
-          {/* Form message inputs bar */}
+          {/* Primary Form Input Box */}
           <div className="p-4 bg-neutral-950 border-t border-white/5 shrink-0">
             <form
               onSubmit={(e) => {
@@ -430,7 +787,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Savolingizni bu yerga yozing..."
                 disabled={isLoading}
-                className="flex-1 bg-transparent border-none outline-none text-sm placeholder-gray-500 text-gray-200 pr-12 focus:ring-0"
+                className="flex-1 bg-transparent border-none outline-none text-sm placeholder-gray-500 text-gray-205 pr-12 focus:ring-0 focus:outline-none"
               />
               <button
                 type="submit"
@@ -444,7 +801,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
                 <Send className="w-4 h-4" />
               </button>
             </form>
-            <p className="text-[10px] text-center text-gray-600 mt-2">
+            <p className="text-[10px] text-center text-gray-550 mt-2">
               Maslahatchi bilan savob-javoblar shaxsiy hisoblanadi va xavfsiz kanallar orqali himoyalangan.
             </p>
           </div>

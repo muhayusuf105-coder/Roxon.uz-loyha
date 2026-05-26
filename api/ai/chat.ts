@@ -96,6 +96,31 @@ Muhim ko'rsatmalar:
 
   } catch (err: any) {
     console.error('Gemini error:', err);
-    return res.status(500).json({ error: err.message || 'Ichki server xatoligi yuz berdi.' });
+    
+    const errStr = String(err.message || err);
+    
+    // Check for Quota exceeded / Rate limit (429 / RESOURCE_EXHAUSTED)
+    if (
+      errStr.includes('429') || 
+      errStr.includes('RESOURCE_EXHAUSTED') || 
+      errStr.includes('quota') || 
+      errStr.includes('limit') || 
+      errStr.includes('current quota')
+    ) {
+      return res.status(429).json({
+        error: "⚠️ **Tizim vaqtincha band:** Siz bepul tarifdagi daqiqalik yoki kunlik cheklovga (**Quota Limit**) duch keldingiz. Bizning AI xizmatimiz mutlaqo **BEPUL**! Shunchaki server yuklamasini kamaytirish uchun so'rovlar orasida ozroq tanaffus qilish lozim.\n\nIltimos, **1-2 daqiqa kutib**, xabarni qayta yuborib ko'ring. Hech qanday pul to'lash shart emas, shunchaki qisqa vaqt kutishingiz yetarli. 😊"
+      });
+    }
+
+    // Check for Invalid API key or status 400
+    if (errStr.includes('API_KEY_INVALID') || errStr.includes('API key not valid')) {
+      return res.status(400).json({
+        error: "⚠️ **Xatolik:** Vercel sozlamalariga kiritilgan Gemini API kaliti (GEMINI_API_KEY) yaroqsiz (noto'g'ri) yoki xato yozilgan. Iltimos, Vercel paneli orqali kalitingizni so'z boshi va oxiridagi bo'shliqlarsiz to'g'ri kiritganingizga ishonch hosil qiling va loyihani qayta deploy (Redeploy) qiling."
+      });
+    }
+
+    return res.status(500).json({ 
+      error: `⚠️ **Xatolik:** Sun'iy intellektdan javob olishda xatolik yuz berdi: ${errStr}` 
+    });
   }
 }
