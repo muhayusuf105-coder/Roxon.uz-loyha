@@ -25,12 +25,23 @@ export default async function handler(req: any, res: any) {
       return res.status(400).json({ error: 'Suhbat tarixi (messages) talab qilinadi.' });
     }
 
-    // Read GEMINI_API_KEY from environment variables on Vercel
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    // Read GEMINI_API_KEY from environment variables on Vercel with case-insensitive / robust fallbacks
+    const rawApiKey = 
+      process.env.GEMINI_API_KEY || 
+      process.env.Gemini_API_Key || 
+      process.env.Gemini_API_Ke || 
+      process.env.gemini_api_key;
+
+    if (!rawApiKey) {
       return res.status(500).json({
-        error: "Gemini API kaliti serverda sozlanmagan. Iltimos, Vercel boshqaruv panelida (Environment Variables) GEMINI_API_KEY kalitini kiriting."
+        error: "Gemini API kaliti serverda topilmadi. Iltimos, Vercel sozlamalarida variable nomini to'g'ri (katta harflar bilan: GEMINI_API_KEY) o'rnating va loyihani QAYTA DEPLOY (Redeploy) qiling."
       });
+    }
+
+    // Sanitize the API Key: trim whitespace, strip quotes, and fix the common 'AlzaSy' -> 'AIzaSy' typo
+    let apiKey = rawApiKey.trim().replace(/^["']|["']$/g, '');
+    if (apiKey.startsWith('AlzaSy')) {
+      apiKey = 'AI' + apiKey.slice(2);
     }
 
     // Initialize GoogleGenAI client with the correct headers
