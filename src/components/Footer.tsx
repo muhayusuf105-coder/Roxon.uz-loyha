@@ -31,29 +31,29 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
 
   return (
     <footer className="bg-neutral-950 border-t border-white/5 text-gray-400 mt-auto">
-      <div className="mx-auto max-w-7xl px-6 md:px-12 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-12 py-8 sm:py-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
         
         {/* Brand Block */}
-        <div className="space-y-6">
+        <div className="col-span-2 md:col-span-1 space-y-3 sm:space-y-6">
           <a
             href="#home"
             onClick={(e) => {
               e.preventDefault();
               onNavigate('home');
             }}
-            className="text-2xl font-black text-amber-500 hover:text-amber-400 transition-colors tracking-tighter"
+            className="text-xl sm:text-2xl font-black text-amber-500 hover:text-amber-400 transition-colors tracking-tighter"
           >
             ROXON
           </a>
-          <p className="text-sm text-gray-450 leading-relaxed">
+          <p className="text-xs sm:text-sm text-gray-450 leading-relaxed">
             O'zbekistondagi yetakchi industrial uskunalar va elektr asboblar do'koni. Sifat, mutlaq ishonch va professionallik kafolati.
           </p>
         </div>
 
         {/* Product links */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-black text-white uppercase tracking-wider">Mahsulotlar</h4>
-          <ul className="space-y-2.5 text-sm">
+        <div className="col-span-1 space-y-3 sm:space-y-4">
+          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Mahsulotlar</h4>
+          <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm">
             <li>
               <a
                 href="#products"
@@ -106,9 +106,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
         </div>
 
         {/* Info Directory */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-black text-white uppercase tracking-wider">Ma'lumotlar</h4>
-          <ul className="space-y-2.5 text-sm">
+        <div className="col-span-1 space-y-3 sm:space-y-4">
+          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Ma'lumotlar</h4>
+          <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm">
             <li>
               <a
                 href="#about"
@@ -161,9 +161,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
         </div>
 
         {/* Dynamic Mailing newsletter list */}
-        <div className="space-y-4">
-          <h4 className="text-sm font-black text-white uppercase tracking-wider">Xabardor bo'ling</h4>
-          <p className="text-xs text-gray-450 leading-relaxed">
+        <div className="col-span-2 md:col-span-1 space-y-3 sm:space-y-4 border-t border-white/5 pt-4 md:border-t-0 md:pt-0">
+          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Xabardor bo'ling</h4>
+          <p className="text-[11px] sm:text-xs text-gray-450 leading-relaxed">
             Yangi chegirmalar, aksiyalar va mahsulotlar haqida uyingizdan chiqmay birinchilardan bo'lib biling.
           </p>
 

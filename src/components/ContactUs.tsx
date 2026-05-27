@@ -41,7 +41,7 @@ export function ContactUs() {
   };
 
   return (
-    <section id="contact" className="relative min-h-[650px] flex items-center overflow-hidden py-16">
+    <section id="contact" className="relative min-h-[500px] lg:min-h-[650px] flex items-center overflow-hidden py-6 sm:py-16">
       {/* Background with blur map */}
       <div className="absolute inset-0 z-0">
         <img
@@ -53,56 +53,56 @@ export function ContactUs() {
         <div className="absolute inset-0 bg-gradient-to-r from-neutral-950 via-neutral-950/90 to-transparent" />
       </div>
 
-      <div className="relative z-10 px-6 md:px-12 w-full max-w-7xl mx-auto py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+      <div className="relative z-10 px-2 sm:px-6 md:px-12 w-full max-w-7xl mx-auto py-4 sm:py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-12 items-stretch">
           
           {/* Left Column: Glass Contacts Information Box */}
-          <div className="lg:col-span-5 bg-neutral-900/80 border border-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-3xl space-y-8 animate-in fade-in slide-in-from-left duration-500">
+          <div className="lg:col-span-12 xl:col-span-5 bg-neutral-900/80 border border-white/10 backdrop-blur-xl p-3 sm:p-8 rounded-2xl sm:rounded-3xl shadow-3xl flex flex-col justify-between gap-4 sm:gap-8 animate-in fade-in slide-in-from-left duration-500">
             <div>
-              <span className="text-xs font-black text-amber-500 uppercase tracking-widest block mb-1">
+              <span className="text-[10px] sm:text-xs font-black text-amber-500 uppercase tracking-widest block mb-0.5 sm:mb-1">
                 Bog'lanish
               </span>
-              <h2 className="text-2xl font-black text-white">Bizning kontaktlarimiz</h2>
+              <h2 className="text-base sm:text-2xl font-black text-white">Bizning kontaktlarimiz</h2>
             </div>
 
-            <div className="space-y-6">
+            <div className="grid grid-cols-2 min-[410px]:grid-cols-3 lg:grid-cols-1 gap-2 sm:gap-6">
               {/* Address */}
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20 shrink-0">
-                  <MapPin className="w-5 h-5 text-amber-500" />
+              <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-1.5 sm:gap-4 bg-neutral-900/40 lg:bg-transparent border border-white/5 lg:border-0 p-2 sm:p-0 rounded-xl">
+                <div className="p-1.5 sm:p-3 bg-amber-500/10 rounded-lg sm:rounded-xl border border-amber-500/20 shrink-0 self-start">
+                  <MapPin className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-500" />
                 </div>
                 <div>
-                  <p className="text-sm font-bold text-white mb-0.5">Rasmiy manzil</p>
-                  <p className="text-xs text-gray-400 leading-relaxed">
+                  <p className="text-[10px] sm:text-sm font-bold text-white mb-0.5">Rasmiy manzil</p>
+                  <p className="text-[9px] sm:text-xs text-gray-400 leading-tight sm:leading-relaxed">
                     Toshkent sh., Yunusobod tumani, 4-mavze, 22-uy
                   </p>
                 </div>
               </div>
 
               {/* Call Center Details */}
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20 shrink-0">
-                  <Phone className="w-5 h-5 text-amber-500" />
+              <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-1.5 sm:gap-4 bg-neutral-900/40 lg:bg-transparent border border-white/5 lg:border-0 p-2 sm:p-0 rounded-xl">
+                <div className="p-1.5 sm:p-3 bg-amber-500/10 rounded-lg sm:rounded-xl border border-amber-500/20 shrink-0 self-start">
+                  <Phone className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-500" />
                 </div>
-                <div>
-                  <p className="text-sm font-bold text-white mb-0.5">Mijozlarni qo'llash liniyalari</p>
-                  <a href="tel:+998712000000" className="text-base font-extrabold text-white block hover:text-amber-500 transition-colors">
+                <div className="min-w-0">
+                  <p className="text-[10px] sm:text-sm font-bold text-white mb-0.5 truncate">Mijozlarni qo'llash</p>
+                  <a href="tel:+998712000000" className="text-[10px] sm:text-sm md:text-base font-extrabold text-white block hover:text-amber-500 transition-colors truncate">
                     +998 (71) 200-00-00
                   </a>
-                  <a href="tel:+998901234567" className="text-xs text-gray-400 hover:text-amber-500 transition-colors">
-                    +998 (90) 123-45-67 (Servis markazi)
+                  <a href="tel:+998901234567" className="text-[8px] sm:text-xs text-gray-400 hover:text-amber-500 transition-colors block truncate">
+                    +998 (90) 123-45-67
                   </a>
                 </div>
               </div>
 
               {/* Telegram bot */}
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-amber-500/10 rounded-xl border border-amber-500/20 shrink-0">
-                  <Send className="w-5 h-5 text-amber-500" />
+              <div className="flex flex-col lg:flex-row items-stretch lg:items-start gap-1.5 sm:gap-4 bg-neutral-900/40 lg:bg-transparent border border-white/5 lg:border-0 p-2 sm:p-0 rounded-xl">
+                <div className="p-1.5 sm:p-3 bg-amber-500/10 rounded-lg sm:rounded-xl border border-amber-500/20 shrink-0 self-start">
+                  <Send className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-amber-500" />
                 </div>
-                <div>
-                  <p className="text-sm font-bold text-white mb-0.5">Telegram qo'llab-quvvatlash</p>
-                  <a href="#about" className="text-xs font-bold text-amber-500 hover:underline">
+                <div className="min-w-0">
+                  <p className="text-[10px] sm:text-sm font-bold text-white mb-0.5 truncate">Telegram admin</p>
+                  <a href="#about" className="text-[9px] sm:text-xs font-bold text-amber-500 hover:underline block truncate">
                     @roxon_uz_support
                   </a>
                 </div>
@@ -110,26 +110,26 @@ export function ContactUs() {
             </div>
 
             {/* Social listings */}
-            <div className="pt-6 border-t border-white/5">
-              <p className="text-[10px] text-gray-500 uppercase tracking-widest font-black mb-3">
-                Biz ijtimoiy tarmoqlarda
+            <div className="pt-2 sm:pt-6 border-t border-white/5 flex items-center justify-between lg:block">
+              <p className="text-[8px] sm:text-[10px] text-gray-500 uppercase tracking-widest font-black mb-0 sm:mb-3">
+                Tarmoqlar:
               </p>
-              <div className="flex gap-3">
-                <a href="#about" className="p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-400 transition-all" title="Veb-sayt">
-                  <Globe className="w-4 h-4" />
+              <div className="flex gap-1.5 sm:gap-3">
+                <a href="#about" className="p-1.5 sm:p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-400 transition-all" title="Veb-sayt">
+                  <Globe className="w-3 h-3 sm:w-4 sm:h-4" />
                 </a>
-                <a href="#about" className="p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-400 transition-all" title="Telegram">
-                  <Send className="w-4 h-4" />
+                <a href="#about" className="p-1.5 sm:p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-400 transition-all" title="Telegram">
+                  <Send className="w-3 h-3 sm:w-4 sm:h-4" />
                 </a>
-                <a href="#about" className="p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-450 transition-all" title="Email">
-                  <Mail className="w-4 h-4" />
+                <a href="#about" className="p-1.5 sm:p-2.5 rounded-full bg-white/5 border border-white/5 hover:bg-amber-500 hover:text-neutral-950 text-gray-450 transition-all" title="Email">
+                  <Mail className="w-3 h-3 sm:w-4 sm:h-4" />
                 </a>
               </div>
             </div>
           </div>
 
           {/* Right Column: Dynamic Consultation Call request Form */}
-          <div className="lg:col-span-7 bg-neutral-900/60 border border-white/5 backdrop-blur-md p-8 rounded-3xl shadow-2xl">
+          <div className="lg:col-span-12 xl:col-span-7 bg-neutral-900/60 border border-white/5 backdrop-blur-md p-4 sm:p-8 rounded-2xl sm:rounded-3xl shadow-2xl flex flex-col justify-center">
             <div className="flex items-center gap-2 mb-4">
               <Sparkles className="w-5 h-5 text-amber-500 animate-pulse" />
               <h3 className="text-xl font-bold text-white">Mutaxassis maslahati kerakmi?</h3>

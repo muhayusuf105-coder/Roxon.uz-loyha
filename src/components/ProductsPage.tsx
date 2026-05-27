@@ -136,28 +136,28 @@ export function ProductsPage({
 
   return (
     <div className="w-full bg-neutral-950 text-gray-200 flex flex-col font-sans selection:bg-amber-500 selection:text-neutral-950">
-      <div className="flex-1 w-full max-w-7xl mx-auto px-4 md:px-8 py-8 flex flex-col gap-8 animate-fade-in">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-8 py-4 sm:py-8 flex flex-col gap-4 sm:gap-8 animate-fade-in">
         
         {/* Banner with counter and descriptions */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-white/5 pb-6 gap-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-white/5 pb-4 sm:pb-6 gap-3 sm:gap-4">
           <div>
-            <span className="text-xs font-black text-amber-500 uppercase tracking-widest block mb-1.5">
+            <span className="text-[10px] sm:text-xs font-black text-amber-500 uppercase tracking-widest block mb-1">
               Professional Asboblar Ombori
             </span>
-            <h1 className="text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
               Barcha Mahsulotlarimiz
             </h1>
-            <p className="text-sm text-gray-400 mt-2 max-w-2xl leading-relaxed">
+            <p className="text-xs sm:text-sm text-gray-400 mt-1 sm:mt-2 max-w-2xl leading-relaxed">
               O'zbekistondagi eng chidamli va kafolatlangan elektr asboblari, generatorlar va nasoslar. Maxsus qidiruv va filtrlar yordamida kerakli modelni bir necha soniyada toping.
             </p>
           </div>
-          <div className="bg-neutral-900 border border-white/10 px-5 py-3 rounded-2xl self-start md:self-auto flex items-center gap-3">
-            <span className="text-3xl font-black text-amber-500 font-mono">
+          <div className="bg-neutral-900 border border-white/10 px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl self-start md:self-auto flex items-center gap-2 sm:gap-3">
+            <span className="text-xl sm:text-3xl font-black text-amber-500 font-mono">
               {processedProducts.length}      
             </span>
             <div className="text-left">
-              <span className="text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Topilgan modellar</span>
-              <span className="text-xs text-gray-500">jami {products.length} tadan</span>
+              <span className="text-[8px] sm:text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Topilgan modellar</span>
+              <span className="text-[10px] sm:text-xs text-gray-500">jami {products.length} tadan</span>
             </div>
           </div>
         </div>
@@ -351,7 +351,7 @@ export function ProductsPage({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+                className="grid grid-cols-2 min-[375px]:grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1.5 sm:gap-6"
               >
                 {processedProducts.map((product) => (
                   <motion.div

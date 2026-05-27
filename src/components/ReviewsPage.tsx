@@ -258,7 +258,7 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
                 </p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-2 min-[410px]:grid-cols-3 sm:grid-cols-2 gap-1.5 sm:gap-5">
                 <AnimatePresence mode="popLayout">
                   {filteredReviews.map((rev) => {
                     const likesCount = likesState[rev.id] !== undefined ? likesState[rev.id] : Math.abs(getHashCode(rev.id) % 14) || 3;
@@ -271,31 +271,31 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.95 }}
-                        className="bg-neutral-900 border border-white/5 p-6 rounded-2xl flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 shadow-xl"
+                        className="bg-neutral-900 border border-white/5 p-2 sm:p-6 rounded-xl sm:rounded-2xl flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 shadow-xl h-full"
                       >
                         <div>
-                          <div className="flex items-center gap-3.5 mb-4">
-                            <div className="w-11 h-11 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-500 shrink-0 text-sm">
+                          <div className="flex items-center gap-1.5 sm:gap-3.5 mb-2 sm:mb-4">
+                            <div className="w-7 h-7 sm:w-11 sm:h-11 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-500 shrink-0 text-[10px] sm:text-sm">
                               {rev.authorInitials}
                             </div>
-                            <div>
-                              <h4 className="text-sm font-bold text-gray-200">{rev.author}</h4>
-                              <p className="text-[10px] text-gray-500 font-medium">{rev.role}</p>
+                            <div className="min-w-0">
+                              <h4 className="text-[10px] sm:text-sm font-bold text-gray-200 truncate">{rev.author}</h4>
+                              <p className="text-[8px] sm:text-[10px] text-gray-500 font-medium truncate">{rev.role}</p>
                             </div>
                           </div>
 
-                          <p className="text-xs text-gray-300 italic leading-relaxed mb-4 font-medium select-text">
+                          <p className="text-[9px] sm:text-xs text-gray-350 italic leading-relaxed mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                             "{rev.text}"
                           </p>
                         </div>
 
-                        <div className="flex justify-between items-center pt-3.5 border-t border-white/5 mt-2">
-                          <div className="flex items-center gap-3">
+                        <div className="flex justify-between items-center pt-1.5 sm:pt-3.5 border-t border-white/5 mt-1 sm:mt-2 flex-wrap gap-1">
+                          <div className="flex items-center gap-1.5 sm:gap-3 flex-wrap">
                             <div className="flex gap-0.5">
                               {[...Array(5)].map((_, i) => (
                                 <Star
                                   key={i}
-                                  className={`w-3.5 h-3.5 ${
+                                  className={`w-2 h-2 sm:w-3.5 sm:h-3.5 ${
                                     i < rev.rating ? 'text-amber-500 fill-amber-500' : 'text-neutral-700'
                                   }`}
                                 />
@@ -304,19 +304,19 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
                             
                             <button
                               onClick={(e) => handleLike(rev.id, e)}
-                              className={`flex items-center gap-1.5 text-[10px] font-bold px-2 py-1 rounded-full transition-all border ${
+                              className={`flex items-center gap-1 text-[8px] sm:text-[10px] font-bold px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full transition-all border ${
                                 isLikedByMe
                                   ? 'bg-amber-500/10 text-amber-500 border-amber-500/30'
                                   : 'bg-neutral-950 hover:bg-neutral-850 text-gray-400 border-white/5'
                               }`}
                             >
-                              <ThumbsUp className="w-3 h-3" />
-                              <span>Foydali ({likesCount})</span>
+                              <ThumbsUp className="w-2 h-2 sm:w-3 sm:h-3" />
+                              <span>({likesCount})</span>
                             </button>
                           </div>
 
-                          <div className="flex items-center gap-1 text-[9px] text-gray-500 font-semibold font-mono">
-                            <Calendar className="w-3 h-3" />
+                          <div className="flex items-center gap-0.5 sm:gap-1 text-[7px] sm:text-[9px] text-gray-500 font-semibold font-mono">
+                            <Calendar className="w-2.5 h-2.5 sm:w-3 sm:h-3" />
                             <span>{rev.date}</span>
                           </div>
                         </div>

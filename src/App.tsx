@@ -546,12 +546,12 @@ export default function App() {
                   {/* Gorizontal karusel ro'yxati */}
                   <div 
                     ref={carouselRef}
-                    className="flex overflow-x-auto gap-6 pb-6 pt-2 scroll-smooth no-scrollbar snap-x snap-mandatory"
+                    className="flex overflow-x-auto gap-2 sm:gap-6 pb-6 pt-2 scroll-smooth no-scrollbar snap-x snap-mandatory"
                   >
                     {filteredProducts.map((product) => (
                       <div 
                         key={product.id} 
-                        className="w-[280px] sm:w-[325px] shrink-0 snap-start"
+                        className="w-[140px] min-[375px]:w-[170px] sm:w-[325px] shrink-0 snap-start"
                       >
                         <ProductCard
                           product={product}
