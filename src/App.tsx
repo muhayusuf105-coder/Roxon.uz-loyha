@@ -23,11 +23,12 @@ import { AiChatPage } from './components/AiChatPage';
 import { LoginPage } from './components/LoginPage';
 import { ReviewsPage } from './components/ReviewsPage';
 import { AdminPanel } from './components/AdminPanel';
-import { ShoppingBag, Star, AlertTriangle, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ProductsPage } from './components/ProductsPage';
+import { ShoppingBag, Star, AlertTriangle, Sparkles, CheckCircle2, ChevronLeft, ChevronRight } from 'lucide-react';
 
 export default function App() {
   // Application Page State
-  const [currentPage, setCurrentPage] = useState<'store' | 'ai' | 'login' | 'reviews' | 'admin'>('store');
+  const [currentPage, setCurrentPage] = useState<'store' | 'products' | 'ai' | 'login' | 'reviews' | 'admin'>('store');
 
   // Application States
   const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all');
@@ -46,6 +47,23 @@ export default function App() {
 
   // Success Notification popup
   const [notification, setNotification] = useState<string | null>(null);
+
+  // Karusel slayd uchun ref va aylantirish funksiyalari
+  const carouselRef = React.useRef<HTMLDivElement>(null);
+
+  const scrollLeft = () => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.firstElementChild?.clientWidth || 320;
+      carouselRef.current.scrollBy({ left: -(cardWidth + 24), behavior: 'smooth' });
+    }
+  };
+
+  const scrollRight = () => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.firstElementChild?.clientWidth || 320;
+      carouselRef.current.scrollBy({ left: cardWidth + 24, behavior: 'smooth' });
+    }
+  };
 
   // Load cart, session and orders data on mount
   useEffect(() => {
@@ -139,6 +157,12 @@ export default function App() {
     setActiveSection(sectionId);
     
     if (sectionId === 'ai-chat') {
+      if (!userSession) {
+        setCurrentPage('login');
+        triggerNotification("ROXON AI bilan bog'lanish va savol berish uchun avval tizimga kiting!");
+        window.scrollTo({ top: 0, behavior: 'instant' });
+        return;
+      }
       setCurrentPage('ai');
       window.scrollTo({ top: 0, behavior: 'instant' });
       return;
@@ -162,6 +186,12 @@ export default function App() {
       return;
     }
 
+    if (sectionId === 'products') {
+      setCurrentPage('products');
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      return;
+    }
+
     // Go back to main product catalog store
     setCurrentPage('store');
 
@@ -170,10 +200,6 @@ export default function App() {
       if (sectionId === 'home') {
         window.scrollTo({ top: 0, behavior: 'smooth' });
         return;
-      }
-
-      if (sectionId === 'products') {
-        targetId = 'products-section';
       }
 
       const element = document.getElementById(targetId);
@@ -186,12 +212,8 @@ export default function App() {
   // Search input change handler
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    if (query.trim().length > 0) {
-      // Auto-scroll to products catalog to show instant query results
-      const element = document.getElementById('products-section');
-      if (element) {
-        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
+    if (query.trim().length > 0 && currentPage !== 'products') {
+      setCurrentPage('products');
     }
   };
 
@@ -199,6 +221,13 @@ export default function App() {
   const handleAddToCart = (product: Product, e?: React.MouseEvent) => {
     if (e) {
       e.stopPropagation();
+    }
+    
+    if (!userSession) {
+      setCurrentPage('login');
+      triggerNotification("Mahsulotlarni savatga qo'shish va sotib olish uchun avval shaxsiy hisobingizga kiring!");
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      return;
     }
     
     const existing = cartItems.find((item) => item.product.id === product.id);
@@ -359,7 +388,41 @@ export default function App() {
           reviews={reviews}
           onAddReview={handleAddReview}
           userName={userSession?.name}
+          onNavigateToLogin={() => handleNavigate('login-page')}
         />
+      ) : currentPage === 'products' ? (
+        <>
+          <Header
+            cartItemCount={cartItems.reduce((acc, item) => acc + item.quantity, 0)}
+            onCartClick={() => setIsCartOpen(true)}
+            searchQuery={searchQuery}
+            onSearchChange={handleSearchChange}
+            activeSection="products"
+            onNavigate={handleNavigate}
+            onLoginClick={() => handleNavigate('login-page')}
+            userName={userSession?.name}
+            onLogout={handleLogout}
+            isAdmin={userSession?.isAdmin || false}
+          />
+          <main className="flex-1 min-h-screen">
+            <ProductsPage
+              onBackToStore={() => handleNavigate('home')}
+              products={PRODUCTS}
+              categories={CATEGORIES}
+              initialCategory={selectedCategory}
+              initialSearchQuery={searchQuery}
+              onAddToCart={handleAddToCart}
+              onViewDetails={(prod) => setSelectedProduct(prod)}
+            />
+          </main>
+          <Footer
+            onCategoryFilter={(catId) => {
+              setSelectedCategory(catId);
+              handleNavigate('products');
+            }}
+            onNavigate={handleNavigate}
+          />
+        </>
       ) : currentPage === 'login' ? (
         <LoginPage
           onBackToStore={() => handleNavigate('home')}
@@ -431,11 +494,33 @@ export default function App() {
                   </h2>
                 </div>
 
-                {searchQuery && (
-                  <span className="text-xs text-gray-400 bg-neutral-900 border border-white/5 py-1.5 px-3 rounded-lg">
-                    Qidiruv: <span className="text-amber-500 font-bold">"{searchQuery}"</span> bo'yicha ({filteredProducts.length} ta natija)
-                  </span>
-                )}
+                <div className="flex items-center gap-4 justify-between sm:justify-end flex-wrap sm:flex-nowrap">
+                  {searchQuery && (
+                    <span className="text-xs text-gray-400 bg-neutral-900 border border-white/5 py-1.5 px-3 rounded-lg">
+                      Qidiruv: <span className="text-amber-500 font-bold">"{searchQuery}"</span> bo'yicha ({filteredProducts.length} ta natija)
+                    </span>
+                  )}
+
+                  {/* Navigatsiya tugmalari (O'ng va Chap arrow) */}
+                  {filteredProducts.length > 0 && (
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={scrollLeft}
+                        className="w-10 h-10 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-white/10 hover:border-amber-500 text-gray-400 hover:text-amber-500 flex items-center justify-center transition-all duration-200 shadow-lg cursor-pointer active:scale-95"
+                        title="Chapga surish"
+                      >
+                        <ChevronLeft className="w-5 h-5" />
+                      </button>
+                      <button
+                        onClick={scrollRight}
+                        className="w-10 h-10 rounded-full bg-neutral-900 hover:bg-neutral-800 border border-white/10 hover:border-amber-500 text-gray-400 hover:text-amber-500 flex items-center justify-center transition-all duration-200 shadow-lg cursor-pointer active:scale-95"
+                        title="O'ngga surish"
+                      >
+                        <ChevronRight className="w-5 h-5" />
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Results Grid or Empty indicator */}
@@ -457,15 +542,28 @@ export default function App() {
                   </button>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {filteredProducts.map((product) => (
-                    <ProductCard
-                      key={product.id}
-                      product={product}
-                      onAddToCart={(prod, e) => handleAddToCart(prod, e)}
-                      onViewDetails={(prod) => setSelectedProduct(prod)}
-                    />
-                  ))}
+                <div className="relative">
+                  {/* Gorizontal karusel ro'yxati */}
+                  <div 
+                    ref={carouselRef}
+                    className="flex overflow-x-auto gap-6 pb-6 pt-2 scroll-smooth no-scrollbar snap-x snap-mandatory"
+                  >
+                    {filteredProducts.map((product) => (
+                      <div 
+                        key={product.id} 
+                        className="w-[280px] sm:w-[325px] shrink-0 snap-start"
+                      >
+                        <ProductCard
+                          product={product}
+                          onAddToCart={(prod, e) => handleAddToCart(prod, e)}
+                          onViewDetails={(prod) => setSelectedProduct(prod)}
+                        />
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Ko'rsatkich gradientli o'ng burchak (desktopda) */}
+                  <div className="hidden lg:block absolute right-0 top-0 bottom-6 w-16 bg-gradient-to-l from-neutral-950 to-transparent pointer-events-none" />
                 </div>
               )}
             </section>
@@ -513,7 +611,13 @@ export default function App() {
         onRemoveItem={handleRemoveItem}
         onCheckout={() => {
           setIsCartOpen(false);
-          setIsCheckoutOpen(true);
+          if (!userSession) {
+            setCurrentPage('login');
+            triggerNotification("Xaridni amalga oshirish va buyurtmani rasmiylashtirish uchun tizimga kirishingiz shart!");
+            window.scrollTo({ top: 0, behavior: 'instant' });
+          } else {
+            setIsCheckoutOpen(true);
+          }
         }}
       />
 

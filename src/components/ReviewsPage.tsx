@@ -13,9 +13,10 @@ interface ReviewsPageProps {
   reviews: Review[];
   onAddReview: (review: Omit<Review, 'id' | 'date' | 'authorInitials'>) => void;
   userName?: string;
+  onNavigateToLogin?: () => void;
 }
 
-export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName }: ReviewsPageProps) {
+export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onNavigateToLogin }: ReviewsPageProps) {
   // Navigation reviews list & review submission form
   const [author, setAuthor] = useState(userName || '');
   const [role, setRole] = useState('Sadoqatli mijoz');
@@ -353,6 +354,23 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName }: R
                   className="px-4 py-2 mt-2 bg-neutral-850 hover:bg-neutral-800 border border-white/5 text-xs text-gray-300 font-bold rounded-xl"
                 >
                   Yana fikr qoldirish
+                </button>
+              </div>
+            ) : !userName ? (
+              <div className="py-8 text-center space-y-4">
+                <div className="w-14 h-14 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
+                  <span className="text-xl">🔒</span>
+                </div>
+                <h4 className="text-sm font-black text-white">Sharh yozish cheklangan</h4>
+                <p className="text-xs text-gray-400 max-w-xs mx-auto leading-relaxed">
+                  Fikr-mulohaza qoldirish va muvaffaqiyatli bonus mukofotini qo'lga kiritish uchun avval shaxsiy kabinetga kirish lozim.
+                </p>
+                <button
+                  type="button"
+                  onClick={onNavigateToLogin}
+                  className="w-full py-3 bg-amber-500 text-neutral-950 text-xs font-black rounded-xl transition-all hover:scale-105 font-bold cursor-pointer"
+                >
+                  Tizimga kirish / Ro'yxatdan o'tish
                 </button>
               </div>
             ) : (

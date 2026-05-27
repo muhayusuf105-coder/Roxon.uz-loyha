@@ -27,7 +27,7 @@ export interface Product {
   image: string;
   rating: number;
   reviewsCount: number;
-  tag?: 'YANGI' | 'HEAVY-DUTY' | '-15%' | 'CHEGIRMA';
+  tag?: string;
   description: string;
   specs: ProductSpec[];
   warrantyMonths: number;
