@@ -46,17 +46,15 @@ export function Header({
     e.preventDefault();
     onNavigate(id);
     setMobileMenuOpen(false);
-  };
-
-  return (
+  };  return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-surface/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 md:px-12">
+      <div className="mx-auto flex h-14 sm:h-20 max-w-7xl items-center justify-between px-2.5 sm:px-6 md:px-12">
         {/* Brand Logo */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-2 sm:gap-8">
           <a
             href="#home"
             onClick={(e) => handleLinkClick('home', e)}
-            className="text-2xl font-black tracking-tighter text-amber-500 hover:text-amber-400 transition-colors"
+            className="text-lg sm:text-2xl font-black tracking-tighter text-amber-500 hover:text-amber-400 transition-colors"
           >
             ROXON
           </a>
@@ -89,31 +87,31 @@ export function Header({
         </div>
 
         {/* Real-time Search Box */}
-        <div className="flex flex-1 max-w-sm md:max-w-md mx-4 md:mx-8">
+        <div className="flex flex-1 max-w-[140px] min-[360px]:max-w-[170px] sm:max-w-sm md:max-w-md mx-1.5 sm:mx-8">
           <div className="relative w-full group">
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
-              className="w-full bg-neutral-900 border-none rounded-full pl-11 pr-4 py-2 text-sm text-gray-200 placeholder-gray-500 focus:ring-2 focus:ring-amber-500 transition-all outline-none"
-              placeholder="Mahsulotlarni qidirish..."
+              className="w-full bg-neutral-900 border-none rounded-full pl-7 sm:pl-11 pr-3 sm:pr-4 py-1 sm:py-2 text-[10px] sm:text-sm text-gray-200 placeholder-gray-550 focus:ring-1 sm:focus:ring-2 focus:ring-amber-500 transition-all outline-none"
+              placeholder="Qidirish..."
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-450 pointer-events-none group-focus-within:text-amber-500 transition-colors" />
+            <Search className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-4 sm:h-4 text-gray-550 pointer-events-none group-focus-within:text-amber-500 transition-colors" />
           </div>
         </div>
 
         {/* User Actions Buttons */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1 sm:gap-4">
           {/* Shopping Cart Button */}
           <button
             onClick={onCartClick}
             id="cart-trigger-btn"
-            className="p-2.5 hover:bg-neutral-900 rounded-full transition-all relative text-amber-500 hover:scale-105 active:scale-95"
+            className="p-1.5 sm:p-2.5 hover:bg-neutral-900 rounded-full transition-all relative text-amber-500 hover:scale-105 active:scale-95"
             title="Savatni ko'rish"
           >
-            <ShoppingCart className="w-6 h-6" />
+            <ShoppingCart className="w-4.5 h-4.5 sm:w-6 sm:h-6" />
             {cartItemCount > 0 && (
-              <span className="absolute -top-0.5 -right-0.5 bg-amber-500 text-neutral-950 text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full animate-bounce">
+              <span className="absolute top-0 right-0 bg-amber-500 text-neutral-950 text-[8px] sm:text-[10px] font-black w-3.5 h-3.5 sm:w-5 sm:h-5 flex items-center justify-center rounded-full animate-bounce">
                 {cartItemCount}
               </span>
             )}
@@ -159,10 +157,10 @@ export function Header({
           {/* Mobile responsive drawer toggle buttons */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 hover:bg-neutral-900 rounded-full transition-all lg:hidden text-gray-450"
+            className="p-1 hover:bg-neutral-900 rounded-full transition-all lg:hidden text-gray-450"
             aria-label="Menuni ochish"
           >
-            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </div>

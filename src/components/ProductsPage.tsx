@@ -57,13 +57,14 @@ export function ProductsPage({
 
   // Map Category Icons
   const getCategoryIcon = (iconName: string) => {
+    const iconClass = "w-3.5 h-3.5 sm:w-4 sm:h-4";
     switch (iconName) {
-      case 'Wrench': return <Wrench className="w-4 h-4" />;
-      case 'Zap': return <Zap className="w-4 h-4" />;
-      case 'Droplet': return <Droplet className="w-4 h-4" />;
-      case 'Hammer': return <Hammer className="w-4 h-4" />;
-      case 'Layers': return <Layers className="w-4 h-4" />;
-      default: return <Compass className="w-4 h-4" />;
+      case 'Wrench': return <Wrench className={iconClass} />;
+      case 'Zap': return <Zap className={iconClass} />;
+      case 'Droplet': return <Droplet className={iconClass} />;
+      case 'Hammer': return <Hammer className={iconClass} />;
+      case 'Layers': return <Layers className={iconClass} />;
+      default: return <Compass className={iconClass} />;
     }
   };
 
@@ -136,36 +137,36 @@ export function ProductsPage({
 
   return (
     <div className="w-full bg-neutral-950 text-gray-200 flex flex-col font-sans selection:bg-amber-500 selection:text-neutral-950">
-      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-8 py-4 sm:py-8 flex flex-col gap-4 sm:gap-8 animate-fade-in">
+      <div className="flex-1 w-full max-w-7xl mx-auto px-2 sm:px-4 md:px-8 py-2 sm:py-8 flex flex-col gap-2.5 sm:gap-8 animate-fade-in">
         
         {/* Banner with counter and descriptions */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-white/5 pb-4 sm:pb-6 gap-3 sm:gap-4">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between border-b border-white/5 pb-2.5 sm:pb-6 gap-2 sm:gap-4">
           <div>
-            <span className="text-[10px] sm:text-xs font-black text-amber-500 uppercase tracking-widest block mb-1">
+            <span className="text-[8px] sm:text-xs font-black text-amber-500 uppercase tracking-widest block mb-0.5 sm:mb-1">
               Professional Asboblar Ombori
             </span>
-            <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            <h1 className="text-sm min-[370px]:text-base sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
               Barcha Mahsulotlarimiz
             </h1>
-            <p className="text-xs sm:text-sm text-gray-400 mt-1 sm:mt-2 max-w-2xl leading-relaxed">
-              O'zbekistondagi eng chidamli va kafolatlangan elektr asboblari, generatorlar va nasoslar. Maxsus qidiruv va filtrlar yordamida kerakli modelni bir necha soniyada toping.
+            <p className="text-[10px] sm:text-sm text-gray-400 mt-1 max-w-2xl leading-normal sm:leading-relaxed">
+              O'zbekistondagi eng chidamli elektr asboblari, generatorlar va nasoslar. Kalit so'zlar yordamida kerakli modelni toping.
             </p>
           </div>
-          <div className="bg-neutral-900 border border-white/10 px-3 py-2 sm:px-5 sm:py-3 rounded-xl sm:rounded-2xl self-start md:self-auto flex items-center gap-2 sm:gap-3">
-            <span className="text-xl sm:text-3xl font-black text-amber-500 font-mono">
+          <div className="bg-neutral-900 border border-white/10 px-2 py-1 sm:px-5 sm:py-3 rounded-lg sm:rounded-2xl self-start md:self-auto flex items-center gap-1.5 sm:gap-3">
+            <span className="text-xs sm:text-3xl font-black text-amber-500 font-mono">
               {processedProducts.length}      
             </span>
             <div className="text-left">
-              <span className="text-[8px] sm:text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Topilgan modellar</span>
-              <span className="text-[10px] sm:text-xs text-gray-500">jami {products.length} tadan</span>
+              <span className="text-[7px] sm:text-[10px] text-gray-400 font-bold block uppercase tracking-wider">Topildi</span>
+              <span className="text-[8px] sm:text-xs text-gray-500 font-medium">jami {products.length} tadan</span>
             </div>
           </div>
         </div>
 
         {/* Categories Carousel / Badges Pill - Full Width Scrolling */}
-        <div className="flex flex-col gap-3">
-          <span className="text-xs font-bold text-gray-400 tracking-wider block">Turkumlar bo'yicha filter:</span>
-          <div className="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar">
+        <div className="flex flex-col gap-1.5 sm:gap-3">
+          <span className="text-[9px] sm:text-xs font-bold text-gray-400 tracking-wider block">Turkumlar bo'yicha filter:</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 overflow-x-auto pb-1.5 sm:pb-2 no-scrollbar">
             {categories.map((cat) => {
               const isSelected = selectedCategory === cat.id;
               const count = categoryCounts[cat.id] ?? 0;
@@ -173,7 +174,7 @@ export function ProductsPage({
                 <button
                   key={cat.id}
                   onClick={() => setSelectedCategory(cat.id)}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all shrink-0 border duration-200 cursor-pointer ${
+                  className={`flex items-center gap-1 sm:gap-2 px-2 py-1.5 sm:px-4 sm:py-2.5 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-bold transition-all shrink-0 border duration-200 cursor-pointer ${
                     isSelected
                       ? 'bg-amber-500 text-neutral-950 border-amber-500 font-black shadow-lg shadow-amber-500/10'
                       : 'bg-neutral-900 border-white/5 hover:border-white/15 text-gray-450 hover:text-white'
@@ -181,8 +182,8 @@ export function ProductsPage({
                 >
                   {getCategoryIcon(cat.icon)}
                   <span>{cat.name}</span>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded-full ${
-                    isSelected ? 'bg-neutral-950 text-amber-500' : 'bg-neutral-950 text-gray-500'
+                  <span className={`text-[8px] sm:text-[10px] font-mono px-1 sm:px-1.5 py-0.5 rounded-full ${
+                    isSelected ? 'bg-neutral-950 text-amber-500' : 'bg-neutral-950 text-gray-505'
                   }`}>
                     {count}
                   </span>
@@ -193,60 +194,61 @@ export function ProductsPage({
         </div>
 
         {/* Advanced Filters Panel */}
-        <div className="bg-neutral-900/55 border border-white/5 rounded-3xl p-5 md:p-6 flex flex-col gap-5">
+        <div className="bg-neutral-900/55 border border-white/5 rounded-2xl sm:rounded-3xl p-3 sm:p-6 flex flex-col gap-3 sm:gap-5">
           
           {/* Main search input bar paired with sorting & Advanced toggles */}
-          <div className="flex flex-col lg:flex-row items-center gap-4">
+          <div className="flex flex-col lg:flex-row items-center gap-2 sm:gap-4">
             
             {/* Live Search Control */}
             <div className="relative w-full flex-1 group">
               <input
                 type="text"
-                placeholder="Nomi, xususiyati yoki tavsifi bo'yicha kalit so'zni kiriting..."
+                placeholder="Qidiruv..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/10 rounded-2xl pl-11 pr-10 py-3 text-sm text-gray-200 placeholder-gray-500 outline-none transition-all"
+                className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 focus:ring-1 focus:ring-amber-500/10 rounded-xl sm:rounded-2xl pl-8 pr-8 py-2 sm:pl-11 sm:pr-10 sm:py-3 text-xs sm:text-sm text-gray-200 placeholder-gray-500 outline-none transition-all"
               />
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 group-focus-within:text-amber-500 transition-colors" />
+              <Search className="absolute left-2.5 sm:left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 sm:w-4 sm:h-4 text-gray-505 group-focus-within:text-amber-500 transition-colors" />
               {searchQuery.length > 0 && (
                 <button
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-450 hover:text-white p-0.5 rounded-full hover:bg-neutral-900"
+                  className="absolute right-2.5 sm:right-4 top-1/2 -translate-y-1/2 text-gray-450 hover:text-white p-0.5 rounded-full hover:bg-neutral-900"
                   title="Qidiruvni tozalash"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
               )}
             </div>
 
             {/* Sorting trigger widget */}
-            <div className="flex items-center gap-3 w-full lg:w-auto">
+            <div className="flex items-center gap-2 sm:gap-3 w-full lg:w-auto">
               <div className="relative flex-1 lg:flex-none">
                 <select
                   value={sortOption}
                   onChange={(e) => setSortOption(e.target.value as SortOption)}
-                  className="w-full lg:w-56 bg-neutral-950 border border-white/5 text-xs font-bold text-gray-300 rounded-2xl px-4 py-3.5 pr-8 appearance-none focus:border-amber-500/40 outline-none cursor-pointer"
+                  className="w-full lg:w-56 bg-neutral-950 border border-white/5 text-[10px] sm:text-xs font-bold text-gray-350 rounded-xl sm:rounded-2xl px-2.5 py-2 sm:px-4 sm:py-3.5 pr-8 appearance-none focus:border-amber-500/40 outline-none cursor-pointer"
                 >
-                  <option value="default">Tartiblash (Birlamchi)</option>
+                  <option value="default font-bold">Tartiblash (Birlamchi)</option>
                   <option value="price-asc">Arzonroqdan qimmatroqqa</option>
                   <option value="price-desc">Qimmatroqdan arzonroqqa</option>
-                  <option value="rating-desc">Baholanishi (Eng yuqori)</option>
+                  <option value="rating-desc">Baholanishi (Yuqori)</option>
                   <option value="name-asc">Nomi bo'yicha (A - Z)</option>
                 </select>
-                <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-500 pointer-events-none" />
+                <ArrowUpDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500 pointer-events-none" />
               </div>
 
               {/* Show Filters toggle button */}
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className={`px-4 py-3 rounded-2xl text-xs font-bold border flex items-center gap-2 cursor-pointer transition-colors ${
+                className={`px-2.5 py-2 sm:px-4 sm:py-3 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-bold border flex items-center gap-1 sm:gap-2 cursor-pointer transition-colors ${
                   showFilters || minPrice !== '' || maxPrice !== '' || onlyAvailable
                     ? 'bg-amber-500/10 border-amber-500 text-amber-400'
                     : 'bg-neutral-950 border-white/5 hover:border-white/10 text-gray-300'
                 }`}
               >
-                <SlidersHorizontal className="w-4 h-4" />
+                <SlidersHorizontal className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span className="hidden sm:inline">Qo'shimcha filtrlar</span>
+                <span className="inline sm:hidden">Filtrlar</span>
               </button>
             </div>
 
@@ -257,19 +259,19 @@ export function ProductsPage({
             <motion.div 
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
-              className="border-t border-white/5 pt-5 grid grid-cols-1 md:grid-cols-3 gap-6 items-end"
+              className="border-t border-white/5 pt-3 sm:pt-5 grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 items-end"
             >
               
               {/* Price bracket bounds min and max */}
-              <div className="space-y-2">
-                <label className="text-[10px] uppercase font-black tracking-widest text-gray-400">Narx oralig'i (Uzs)</label>
-                <div className="flex items-center gap-2">
+              <div className="space-y-1 sm:space-y-2">
+                <label className="text-[8px] sm:text-[10px] uppercase font-black tracking-widest text-gray-405">Narx oralig'i (Uzs)</label>
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <input
                     type="number"
                     placeholder="Minimal"
                     value={minPrice}
                     onChange={(e) => setMinPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 rounded-xl px-3 py-2.5 text-xs text-white placeholder-gray-650 font-mono outline-none"
+                    className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 rounded-lg sm:rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2.5 text-[10px] sm:text-xs text-white placeholder-gray-650 font-mono outline-none"
                   />
                   <span className="text-gray-600">-</span>
                   <input
@@ -277,14 +279,14 @@ export function ProductsPage({
                     placeholder="Maksimal"
                     value={maxPrice}
                     onChange={(e) => setMaxPrice(e.target.value === '' ? '' : Number(e.target.value))}
-                    className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 rounded-xl px-3 py-2.5 text-xs text-white placeholder-gray-650 font-mono outline-none"
+                    className="w-full bg-neutral-950 border border-white/5 focus:border-amber-500/40 rounded-lg sm:rounded-xl px-2.5 py-1.5 sm:px-3 sm:py-2.5 text-[10px] sm:text-xs text-white placeholder-gray-650 font-mono outline-none"
                   />
                 </div>
               </div>
 
               {/* Checkbox only show available products */}
               <div className="flex items-center h-full pb-1">
-                <label className="flex items-center gap-3 cursor-pointer group">
+                <label className="flex items-center gap-2 sm:gap-3 cursor-pointer group">
                   <div className="relative">
                     <input
                       type="checkbox"
@@ -292,16 +294,16 @@ export function ProductsPage({
                       onChange={(e) => setOnlyAvailable(e.target.checked)}
                       className="sr-only"
                     />
-                    <div className={`w-6 h-6 rounded-lg border flex items-center justify-center transition-all ${
+                    <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-md sm:rounded-lg border flex items-center justify-center transition-all ${
                       onlyAvailable 
                         ? 'bg-amber-500 border-amber-500 text-neutral-950' 
                         : 'bg-neutral-950 border-white/10 group-hover:border-white/20'
                     }`}>
-                      {onlyAvailable && <Check className="w-4 h-4 stroke-[3]" />}
+                      {onlyAvailable && <Check className="w-3 h-3 sm:w-4 sm:h-4 stroke-[3]" />}
                     </div>
                   </div>
-                  <span className="text-xs font-semibold text-gray-350 select-none group-hover:text-white transition-colors">
-                    Faqat omborda mavjudlarini ko'rsatish
+                  <span className="text-[10px] sm:text-xs font-semibold text-gray-350 select-none group-hover:text-white transition-colors">
+                    Faqat omborda mavjudlari
                   </span>
                 </label>
               </div>
@@ -310,10 +312,10 @@ export function ProductsPage({
               <div className="flex items-center justify-end">
                 <button
                   onClick={handleResetFilters}
-                  className="w-full md:w-auto px-4 py-2.5 border border-dashed border-white/5 hover:border-red-500/30 text-gray-400 hover:text-red-400 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer active:scale-95"
+                  className="w-full md:w-auto px-3 py-1.5 sm:px-4 sm:py-2.5 border border-dashed border-white/5 hover:border-red-500/30 text-gray-400 hover:text-red-400 rounded-lg sm:rounded-xl text-[10px] sm:text-xs font-semibold flex items-center justify-center gap-1.5 sm:gap-2 transition-all cursor-pointer active:scale-95"
                 >
                   <RotateCcw className="w-3.5 h-3.5" />
-                  <span>Filtrlarni tozalash</span>
+                  <span>Tozalash</span>
                 </button>
               </div>
 
@@ -351,7 +353,7 @@ export function ProductsPage({
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                className="grid grid-cols-2 min-[375px]:grid-cols-3 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1.5 sm:gap-6"
+                className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1.5 sm:gap-6"
               >
                 {processedProducts.map((product) => (
                   <motion.div

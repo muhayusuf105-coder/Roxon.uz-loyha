@@ -40,42 +40,42 @@ export function Testimonials({ reviews, onWriteReviewClick }: TestimonialsProps)
         </div>
 
         <div className="w-full">
-          {/* Reviews List Grid updated to full width layout */}
-          <div className="grid grid-cols-2 min-[410px]:grid-cols-3 sm:grid-cols-2 lg:grid-cols-3 gap-1.5 sm:gap-6">
+          {/* Reviews List Grid strictly configured to a 3-column horizontal layout across all screen sizes */}
+          <div className="grid grid-cols-3 gap-1.5 sm:gap-6">
             {reviews.map((rev) => (
               <div
                 key={rev.id}
                 className="bg-neutral-900/60 border border-white/5 p-2 sm:p-6 rounded-xl sm:rounded-2xl flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 h-full"
               >
                 <div>
-                  <div className="flex items-center gap-1.5 sm:gap-4 mb-2 sm:mb-4">
+                  <div className="flex items-center gap-1 sm:gap-4 mb-1 border-b border-white/5 pb-1 sm:pb-0 sm:border-0 sm:mb-4">
                     {/* Avatar initials badge */}
-                    <div className="w-7 h-7 sm:w-12 sm:h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-500 shrink-0 text-[10px] sm:text-base">
+                    <div className="w-5 h-5 sm:w-12 sm:h-12 rounded-full bg-amber-500/10 border border-amber-500/20 flex items-center justify-center font-bold text-amber-500 shrink-0 text-[8px] sm:text-base">
                       {rev.authorInitials}
                     </div>
                     <div className="min-w-0">
-                      <h4 className="text-[10px] sm:text-sm font-bold text-white truncate">{rev.author}</h4>
-                      <p className="text-[8px] sm:text-[10px] text-gray-550 truncate">{rev.role}</p>
+                      <h4 className="text-[8px] sm:text-sm font-bold text-white truncate">{rev.author}</h4>
+                      <p className="text-[6.5px] sm:text-[10px] text-gray-550 truncate hidden min-[370px]:block">{rev.role}</p>
                     </div>
                   </div>
 
-                  <p className="text-[9px] sm:text-xs text-gray-350 italic leading-relaxed mb-2 sm:mb-4 line-clamp-3 sm:line-clamp-none">
+                  <p className="text-[7.5px] min-[360px]:text-[8px] sm:text-xs text-gray-300 italic leading-tight sm:leading-relaxed mb-1 sm:mb-4 line-clamp-3 sm:line-clamp-none">
                     "{rev.text}"
                   </p>
                 </div>
 
-                <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-white/5 flex-wrap gap-1">
+                <div className="flex justify-between items-center pt-1.5 sm:pt-2 border-t border-white/5 flex-wrap gap-0.5">
                   <div className="flex gap-0.5">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`w-2.5 h-2.5 sm:w-3.5 sm:h-3.5 ${
+                        className={`w-1.5 h-1.5 min-[360px]:w-2 min-[360px]:h-2 sm:w-3.5 sm:h-3.5 ${
                           i < rev.rating ? 'text-amber-500 fill-amber-500' : 'text-neutral-700'
                         }`}
                       />
                     ))}
                   </div>
-                  <span className="text-[8px] sm:text-[10px] text-gray-500 font-mono">
+                  <span className="text-[6.5px] sm:text-[10px] text-gray-500 font-mono hidden sm:inline">
                     {rev.date}
                   </span>
                 </div>

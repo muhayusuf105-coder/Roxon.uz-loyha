@@ -31,29 +31,29 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
 
   return (
     <footer className="bg-neutral-950 border-t border-white/5 text-gray-400 mt-auto">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-12 py-8 sm:py-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-12">
+      <div className="mx-auto max-w-7xl px-2 sm:px-6 md:px-12 py-4 sm:py-16 grid grid-cols-3 sm:grid-cols-4 gap-1.5 sm:gap-12">
         
         {/* Brand Block */}
-        <div className="col-span-2 md:col-span-1 space-y-3 sm:space-y-6">
+        <div className="col-span-1 space-y-1 sm:space-y-6">
           <a
             href="#home"
             onClick={(e) => {
               e.preventDefault();
               onNavigate('home');
             }}
-            className="text-xl sm:text-2xl font-black text-amber-500 hover:text-amber-400 transition-colors tracking-tighter"
+            className="text-[10px] min-[370px]:text-xs sm:text-2xl font-black text-amber-500 hover:text-amber-400 transition-colors tracking-tighter"
           >
             ROXON
           </a>
-          <p className="text-xs sm:text-sm text-gray-450 leading-relaxed">
-            O'zbekistondagi yetakchi industrial uskunalar va elektr asboblar do'koni. Sifat, mutlaq ishonch va professionallik kafolati.
+          <p className="text-[7px] min-[370px]:text-[8.5px] sm:text-sm text-gray-500 leading-normal">
+            Industrial uskunalar va elektr asboblar do'koni. Sifat va ishonch.
           </p>
         </div>
 
-        {/* Product links */}
-        <div className="col-span-1 space-y-3 sm:space-y-4">
-          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Mahsulotlar</h4>
-          <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm">
+        {/* Turlar Block (Product categories) */}
+        <div className="col-span-1 space-y-1 sm:space-y-4">
+          <h4 className="text-[7.5px] min-[370px]:text-[9px] sm:text-sm font-black text-white uppercase tracking-wider">Turlar</h4>
+          <ul className="space-y-1 text-[7px] min-[370px]:text-[8.5px] sm:text-sm">
             <li>
               <a
                 href="#products"
@@ -61,9 +61,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onCategoryFilter('tools');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Elektr instrumentlar
+                Instrumentlar
               </a>
             </li>
             <li>
@@ -73,9 +73,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onCategoryFilter('generators');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Energiya (Generatorlar)
+                Generatorlar
               </a>
             </li>
             <li>
@@ -85,9 +85,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onCategoryFilter('pumps');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Suv nasoslari tizimi
+                Suv nasoslari
               </a>
             </li>
             <li>
@@ -97,18 +97,18 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onCategoryFilter('machinery');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Qurilish texnikalari
+                Qurilish
               </a>
             </li>
           </ul>
         </div>
 
         {/* Info Directory */}
-        <div className="col-span-1 space-y-3 sm:space-y-4">
-          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Ma'lumotlar</h4>
-          <ul className="space-y-2 sm:space-y-2.5 text-[11px] sm:text-sm">
+        <div className="col-span-1 space-y-1 sm:space-y-4">
+          <h4 className="text-[7.5px] min-[370px]:text-[9px] sm:text-sm font-black text-white uppercase tracking-wider">Menyu</h4>
+          <ul className="space-y-1 text-[7px] min-[370px]:text-[8.5px] sm:text-sm">
             <li>
               <a
                 href="#about"
@@ -116,7 +116,7 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onNavigate('about');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
                 Biz haqimizda
               </a>
@@ -128,9 +128,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onNavigate('about');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Yetkazib berish shartlari
+                Yetkazib berish
               </a>
             </li>
             <li>
@@ -140,9 +140,9 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onNavigate('contact');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Kafolat va servis xizmati
+                Kafolat & servis
               </a>
             </li>
             <li>
@@ -152,45 +152,43 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
                   e.preventDefault();
                   onNavigate('reviews');
                 }}
-                className="hover:text-amber-500 transition-colors"
+                className="hover:text-amber-500 transition-colors block truncate"
               >
-                Mijozlarimiz sharhlari
+                Sharhlar
               </a>
             </li>
           </ul>
         </div>
 
-        {/* Dynamic Mailing newsletter list */}
-        <div className="col-span-2 md:col-span-1 space-y-3 sm:space-y-4 border-t border-white/5 pt-4 md:border-t-0 md:pt-0">
-          <h4 className="text-xs sm:text-sm font-black text-white uppercase tracking-wider">Xabardor bo'ling</h4>
-          <p className="text-[11px] sm:text-xs text-gray-450 leading-relaxed">
-            Yangi chegirmalar, aksiyalar va mahsulotlar haqida uyingizdan chiqmay birinchilardan bo'lib biling.
+        {/* Dynamic Mailing newsletter list - Hidden on mobile / Visible on desktop */}
+        <div className="hidden sm:block col-span-1 space-y-1 sm:space-y-4">
+          <h4 className="text-[7.5px] min-[370px]:text-[9px] sm:text-sm font-black text-white uppercase tracking-wider">Obuna</h4>
+          <p className="text-[7px] min-[370px]:text-[8px] sm:text-xs text-gray-500 leading-normal">
+            Chegirmalar haqida xabar oling.
           </p>
 
           {subbed ? (
-            <div className="flex items-center gap-2 text-xs text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 p-3 rounded-xl">
-              <CheckCircle2 className="w-4 h-4 shrink-0" />
-              <span>Siz muvaffaqiyatli obuna bo'ldingiz!</span>
+            <div className="text-[7px] min-[370px]:text-[8px] text-emerald-400 bg-emerald-500/5 p-1 rounded border border-emerald-500/10">
+              Obuna bo'lindi!
             </div>
           ) : (
-            <form onSubmit={handleSubscribe} className="flex gap-2">
+            <form onSubmit={handleSubscribe} className="flex gap-1">
               <div className="relative flex-1">
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Emailingiz..."
-                  className="w-full bg-neutral-900 border border-white/5 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:ring-1 focus:ring-amber-500 pl-9"
+                  placeholder="@"
+                  className="w-full bg-neutral-900 border border-white/5 rounded px-1 min-[370px]:px-1.5 py-1 text-[7px] min-[370px]:text-[8px] sm:text-xs text-white focus:outline-none"
                 />
-                <Mail className="w-3.5 h-3.5 text-gray-500 absolute left-3 top-1/2 -translate-y-1/2" />
               </div>
               <button
                 type="submit"
-                className="p-3 bg-amber-500 hover:bg-amber-450 text-neutral-950 rounded-xl transition-all flex items-center justify-center shrink-0 cursor-pointer"
-                title="Obuna bo'lish"
+                className="p-1 sm:p-2 bg-amber-500 hover:bg-amber-450 text-neutral-950 rounded transition-all flex items-center justify-center shrink-0 cursor-pointer"
+                title="Obuna"
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-2.5 h-2.5 sm:w-4 sm:h-4" />
               </button>
             </form>
           )}

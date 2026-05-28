@@ -4,7 +4,7 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Bot, Sparkles, User, RefreshCw, Trash2, ArrowLeft, Lightbulb, Check, ShieldAlert, Plus, MessageSquare, X } from 'lucide-react';
+import { Send, Bot, Sparkles, User, RefreshCw, Trash2, ArrowLeft, Lightbulb, Check, ShieldAlert, Plus, MessageSquare, X, Menu } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface Message {
@@ -113,6 +113,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   // Sync to Storage
   useEffect(() => {
@@ -363,7 +364,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       if (trimmed.startsWith('-') || trimmed.startsWith('*')) {
         const itemContent = trimmed.slice(1).trim();
         return (
-          <ul key={index} className="list-disc list-outside pl-5 space-y-1 my-1 text-sm text-gray-300">
+          <ul key={index} className="list-disc list-outside pl-5 space-y-1 my-1 text-xs sm:text-sm text-gray-300">
             <li>{parseInlineFormatting(itemContent)}</li>
           </ul>
         );
@@ -373,14 +374,14 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       const numMatch = trimmed.match(/^(\d+)\.\s+(.*)$/);
       if (numMatch) {
         return (
-          <ol key={index} className="list-decimal list-outside pl-5 space-y-1 my-1 text-sm text-gray-300">
+          <ol key={index} className="list-decimal list-outside pl-5 space-y-1 my-1 text-xs sm:text-sm text-gray-300">
             <li value={parseInt(numMatch[1], 10)}>{parseInlineFormatting(numMatch[2])}</li>
           </ol>
         );
       }
 
       return (
-        <p key={index} className="leading-relaxed text-sm mb-2 text-gray-300 min-h-[1.25rem]">
+        <p key={index} className="leading-relaxed text-xs sm:text-sm mb-2 text-gray-300 min-h-[1.25rem]">
           {parseInlineFormatting(para)}
         </p>
       );
@@ -411,48 +412,201 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
   return (
     <div className="h-screen bg-neutral-950 text-white flex flex-col font-sans overflow-hidden" id="ai-chat-view">
       
+      {/* Mobile Drawer Sidebar (ChatGPT-like Sliding Sidebar) */}
+      <AnimatePresence>
+        {isMobileSidebarOpen && (
+          <>
+            {/* Backdrop overlay */}
+            <motion.div
+              key="sidebar-overlay"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.6 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsMobileSidebarOpen(false)}
+              className="fixed inset-0 bg-neutral-950/80 backdrop-blur-sm z-50 lg:hidden"
+            />
+            
+            {/* Slide-out Sidebar Panel */}
+            <motion.div
+              key="sidebar-panel"
+              initial={{ x: '-100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '-100%' }}
+              transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+              className="fixed top-0 bottom-0 left-0 w-4/5 max-w-[280px] bg-neutral-900 border-r border-white/5 z-55 lg:hidden flex flex-col h-full overflow-hidden shadow-2xl"
+            >
+              {/* Sidebar Header */}
+              <div className="flex items-center justify-between p-4 border-b border-white/5 bg-neutral-950/20">
+                <div className="flex items-center gap-2">
+                  <div className="w-7 h-7 bg-amber-500/10 border border-amber-500/30 rounded-lg flex items-center justify-center text-amber-500">
+                    <Bot className="w-4 h-4" />
+                  </div>
+                  <span className="text-xs font-black text-gray-200 uppercase tracking-widest">Suhbatlar</span>
+                </div>
+                <button
+                  onClick={() => setIsMobileSidebarOpen(false)}
+                  className="p-1.5 text-gray-400 hover:text-white rounded-lg hover:bg-neutral-800 transition-colors"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+
+              {/* Sidebar Contents */}
+              <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                
+                {/* Create Chat Button */}
+                <div>
+                  <button
+                    onClick={() => {
+                      handleCreateSession();
+                      setIsMobileSidebarOpen(false);
+                    }}
+                    disabled={isLimitReached}
+                    className={`w-full flex items-center justify-center gap-1.5 text-[11px] font-bold py-2 px-3 rounded-xl border transition-all active:scale-95 ${
+                      isLimitReached 
+                        ? 'bg-neutral-950 border-white/5 text-gray-650 cursor-not-allowed opacity-50' 
+                        : 'bg-amber-500 text-neutral-950 hover:bg-amber-400 border-amber-500'
+                    }`}
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                    <span>Yangi suhbat</span>
+                  </button>
+                </div>
+
+                {/* Session list items */}
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between px-1 mb-1">
+                    <span className="text-[10px] uppercase font-extrabold text-gray-500 tracking-wider">Suhbatlaringiz</span>
+                    <span className="text-[9px] font-bold bg-neutral-950 px-1.5 py-0.5 rounded-full text-gray-400">
+                      {sessions.length} / 10
+                    </span>
+                  </div>
+
+                  {isLimitReached && (
+                    <div className="p-2 bg-amber-500/10 border border-amber-500/25 text-[9px] text-amber-400 leading-normal rounded-lg">
+                      Maksimal limit (10) ga yetdingiz. Yangisini ochish uchun eskisini o'chiring.
+                    </div>
+                  )}
+
+                  <div className="space-y-1 max-h-[220px] overflow-y-auto pr-1">
+                    {sessions.map((session) => {
+                      const isActive = session.id === activeSessionId;
+                      return (
+                        <div
+                          key={session.id}
+                          onClick={() => {
+                            setActiveSessionId(session.id);
+                            setIsMobileSidebarOpen(false);
+                          }}
+                          className={`flex items-center justify-between p-2 rounded-lg border text-xs font-medium cursor-pointer transition-all ${
+                            isActive 
+                              ? 'bg-amber-500/10 border-amber-500/20 text-amber-400' 
+                              : 'bg-neutral-850 border-transparent hover:border-white/5 text-gray-400 hover:text-white'
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 truncate pr-2">
+                            <MessageSquare className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-amber-500' : 'text-gray-500'}`} />
+                            <span className="truncate text-[11px]">{session.title}</span>
+                          </div>
+
+                          <button
+                            onClick={(e) => handleDeleteSession(session.id, e)}
+                            className="p-1 text-gray-500 rounded-lg hover:bg-red-500/10 hover:text-red-400 transition-all shrink-0"
+                          >
+                            <X className="w-3 h-3" />
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Quick starters custom list block */}
+                <div className="border-t border-white/5 pt-3">
+                  <div className="px-1 mb-1.5">
+                    <span className="text-[10px] uppercase font-extrabold text-gray-500 tracking-wider">Mavzular</span>
+                  </div>
+                  <div className="space-y-1 max-h-[180px] overflow-y-auto pr-1">
+                    {starters.map((q, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => {
+                          handleSendMessage(q.prompt);
+                          setIsMobileSidebarOpen(false);
+                        }}
+                        className="w-full text-left p-2 rounded-lg bg-neutral-850 hover:bg-neutral-800 transition-all border border-white/5 text-left mb-1 block"
+                      >
+                        <div className="text-[10px] font-bold text-gray-200 line-clamp-1">{q.title}</div>
+                        <div className="text-[8.5px] text-gray-500 line-clamp-1">{q.description}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Sidebar bottom guide */}
+              <div className="p-4 border-t border-white/5 bg-neutral-950/40">
+                <p className="text-[9.5px] text-gray-500 leading-normal">
+                  Suhbatlar tarixi faqat brauzeringiz xotirasida saqlanadi.
+                </p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+
       {/* 1. Header Navigation */}
-      <div className="sticky top-0 z-40 bg-neutral-900/90 backdrop-blur-md border-b border-white/5 px-4 sm:px-6 py-3.5 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-3 sm:gap-4 overflow-hidden">
+      <div className="sticky top-0 z-40 bg-neutral-900/90 backdrop-blur-md border-b border-white/5 px-2.5 sm:px-6 py-2 sm:py-3.5 flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-1.5 sm:gap-4 overflow-hidden">
+          
+          {/* Mobile Hamburger menu */}
+          <button
+            onClick={() => setIsMobileSidebarOpen(true)}
+            className="flex lg:hidden items-center justify-center p-1.5 bg-neutral-800 hover:bg-neutral-750 text-gray-300 hover:text-white rounded-lg transition-all active:scale-95 shrink-0"
+            title="Suhbatlar"
+          >
+            <Menu className="w-4 h-4" />
+          </button>
+
           <button
             onClick={onBackToStore}
-            className="flex items-center gap-1.5 text-xs font-semibold text-gray-400 hover:text-white bg-neutral-800 hover:bg-neutral-750 px-3 py-2 rounded-xl transition-all active:scale-95 shrink-0"
+            className="flex items-center gap-1 text-[10px] sm:text-xs font-semibold text-gray-400 hover:text-white bg-neutral-800 hover:bg-neutral-750 px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl transition-all active:scale-95 shrink-0"
             title="Sotuv do'koniga qaytish"
           >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Do'kon</span>
+            <ArrowLeft className="w-3 sm:w-3.5 h-3 sm:h-3.5" />
+            <span className="hidden min-[360px]:inline">Do'kon</span>
           </button>
           
-          <div className="flex items-center gap-2 overflow-hidden">
-            <div className="w-8.5 h-8.5 sm:w-10 sm:h-10 bg-amber-500/10 border border-amber-500/30 rounded-xl sm:rounded-2xl flex items-center justify-center text-amber-500 relative shrink-0">
-              <Bot className="w-5 h-5 sm:w-5.5 sm:h-5.5" />
-              <span className="absolute bottom-0 right-0 w-2 h-2 sm:w-2.5 sm:h-2.5 bg-green-500 rounded-full border-2 border-neutral-950 animate-pulse"></span>
+          <div className="flex items-center gap-1 sm:gap-2 overflow-hidden">
+            <div className="w-6.5 h-6.5 sm:w-10 sm:h-10 bg-amber-500/10 border border-amber-500/30 rounded-lg sm:rounded-2xl flex items-center justify-center text-amber-500 relative shrink-0">
+              <Bot className="w-4 h-4 sm:w-5.5 sm:h-5.5" />
+              <span className="absolute bottom-0 right-0 w-1.5 h-1.5 sm:w-2.5 sm:h-2.5 bg-green-500 rounded-full border border-neutral-950 animate-pulse"></span>
             </div>
             <div className="overflow-hidden">
-              <div className="flex items-center gap-1.5">
-                <h1 className="text-xs sm:text-sm font-black tracking-wide text-gray-100 truncate">ROXON AI</h1>
-                <span className="text-[9px] bg-amber-500/15 text-amber-400 px-1.5 py-0.5 rounded-full font-bold uppercase tracking-wider border border-amber-500/10 shrink-0">EXPERT</span>
+              <div className="flex items-center gap-1">
+                <h1 className="text-[10px] min-[370px]:text-xs sm:text-sm font-black tracking-wide text-gray-100 truncate">ROXON AI</h1>
+                <span className="text-[7px] sm:text-[9px] bg-amber-500/15 text-amber-400 px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-full font-bold uppercase tracking-wider border border-amber-500/10 shrink-0">EXPERT</span>
               </div>
-              <p className="text-[10px] sm:text-[11px] text-gray-400 truncate hidden sm:block">Sanoat va texnik yordamchi AI</p>
             </div>
           </div>
         </div>
 
         {/* Header Action Buttons (Create Session & Clear current) */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5">
           {/* Create chat button with dynamic visual status & limit protection */}
           <button
             onClick={handleCreateSession}
             disabled={isLimitReached}
-            className={`flex items-center gap-1.5 text-xs font-bold px-3 py-2 rounded-xl border transition-all active:scale-95 ${
+            className={`flex items-center gap-1 text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3 sm:py-2 rounded-lg sm:rounded-xl border transition-all active:scale-95 ${
               isLimitReached 
                 ? 'bg-neutral-900 border-white/5 text-gray-500 cursor-not-allowed opacity-50' 
                 : 'bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border-amber-500/25'
             }`}
             title={isLimitReached ? "Maksimal suhbatlar soniga yetildi" : "Yangi suhbat ochish (Max 10)"}
           >
-            <Plus className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">Yangi suhbat</span>
+            <Plus className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+            <span className="hidden xs:inline">Yangi chat</span>
           </button>
 
           {messages.length > 1 && (
@@ -673,31 +827,15 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
         </div>
 
         {/* RIGHT SIDE / CONSOLE VIEW: Scrollable Messages List & Inputs */}
-        <div className="flex-1 flex flex-col bg-neutral-900 border border-white/5 rounded-3xl overflow-hidden shadow-2xl h-full">
+        <div className="flex-1 flex flex-col bg-neutral-900 border border-white/5 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl h-full">
           
-          {/* Mobile responsive active session switcher */}
-          <div className="block lg:hidden px-4 py-2 border-b border-white/5 bg-neutral-950/40 flex items-center justify-between gap-2">
-            <span className="text-xs font-bold text-gray-400">Suhbat (Sessions):</span>
-            <select
-              value={activeSessionId}
-              onChange={(e) => setActiveSessionId(e.target.value)}
-              className="bg-neutral-800 border border-white/10 rounded-lg text-xs font-semibold text-white px-2 py-1 focus:outline-none focus:border-amber-500/40"
-            >
-              {sessions.map((s) => (
-                <option key={s.id} value={s.id}>
-                  {s.title} ({s.messages.length} xabar)
-                </option>
-              ))}
-            </select>
-          </div>
-
           {/* Messages pane: dynamically scales, stretches nicely without double scrolls */}
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-5 space-y-4 shadow-inner">
+          <div className="flex-1 overflow-y-auto px-3 sm:px-6 py-3 sm:py-5 space-y-3 sm:space-y-4 shadow-inner">
             <AnimatePresence initial={false}>
               {messages.length === 0 ? (
-                <div className="h-full flex flex-col items-center justify-center p-8 text-center text-gray-500 space-y-2">
-                  <Bot className="w-12 h-12 text-neutral-750 animate-pulse" />
-                  <p className="text-sm font-medium">Bu suhbat bo'sh. Savol matnini pastdan yo'llab muloqotni boshlang.</p>
+                <div className="h-full flex flex-col items-center justify-center p-6 text-center text-gray-500 space-y-2">
+                  <Bot className="w-10 h-10 text-neutral-750 animate-pulse" />
+                  <p className="text-xs sm:text-sm font-medium">Bu suhbat bo'sh. Savol matnini pastdan yo'llab muloqotni boshlang.</p>
                 </div>
               ) : (
                 messages.map((msgRef) => (
@@ -705,32 +843,31 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
                     key={msgRef.id}
                     initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    // Increased maximum width to max-w-[92%] as requested for natural elegant spacious tagma-tag layouts
-                    className={`flex gap-3.5 max-w-[92%] sm:max-w-[88%] lg:max-w-[92%] ${msgRef.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
+                    className={`flex gap-2 sm:gap-3.5 max-w-[95%] sm:max-w-[88%] ${msgRef.role === 'user' ? 'ml-auto flex-row-reverse' : ''}`}
                   >
-                    <div className={`w-8.5 h-8.5 rounded-full flex items-center justify-center shrink-0 border mt-1 ${
+                    <div className={`w-7 h-7 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center shrink-0 border mt-0.5 sm:mt-1 ${
                       msgRef.role === 'user'
                         ? 'bg-amber-500 text-neutral-950 border-amber-400 font-extrabold shadow-md'
                         : 'bg-neutral-800 text-amber-500 border-white/5'
                     }`}>
-                      {msgRef.role === 'user' ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
+                      {msgRef.role === 'user' ? <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> : <Bot className="w-3.5 h-3.5 sm:w-4 sm:h-4" />}
                     </div>
 
-                    <div className="space-y-1 flex flex-col min-w-0 flex-1">
-                      <div className={`p-4 rounded-3xl shrink-0 ${
+                    <div className="space-y-0.5 sm:space-y-1 flex flex-col min-w-0 flex-1">
+                      <div className={`p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl shrink-0 ${
                         msgRef.role === 'user'
                           ? 'bg-amber-500 text-neutral-950 rounded-tr-none font-medium selection:bg-neutral-900 selection:text-white'
                           : 'bg-neutral-850 border border-white/5 rounded-tl-none text-gray-200 selection:bg-amber-500 selection:text-neutral-950'
                       }`}>
                         {msgRef.role === 'user' ? (
-                          <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">{msgRef.content}</p>
+                          <p className="text-xs sm:text-sm leading-normal sm:leading-relaxed whitespace-pre-wrap break-words">{msgRef.content}</p>
                         ) : (
-                          <div className="space-y-1 overflow-x-auto">
+                          <div className="space-y-1 overflow-x-auto text-xs sm:text-sm">
                             {renderParsedMarkdown(msgRef.content)}
                           </div>
                         )}
                       </div>
-                      <span className={`text-[9px] px-1 text-gray-500 ${msgRef.role === 'user' ? 'text-right' : ''}`}>
+                      <span className={`text-[8px] sm:text-[9px] px-1 text-gray-500 ${msgRef.role === 'user' ? 'text-right' : ''}`}>
                         {msgRef.timestamp}
                       </span>
                     </div>
@@ -740,17 +877,17 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
             </AnimatePresence>
 
             {isLoading && (
-              <div className="flex gap-3.5 max-w-[80%]">
-                <div className="w-8.5 h-8.5 rounded-full flex items-center justify-center shrink-0 bg-neutral-800 text-amber-500 border border-white/5 animate-spin">
-                  <RefreshCw className="w-4 h-4" />
+              <div className="flex gap-2 sm:gap-3.5 max-w-[85%] sm:max-w-[80%]">
+                <div className="w-7 h-7 sm:w-8.5 sm:h-8.5 rounded-full flex items-center justify-center shrink-0 bg-neutral-800 text-amber-500 border border-white/5 animate-spin">
+                  <RefreshCw className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </div>
-                <div className="p-4 rounded-3xl rounded-tl-none bg-neutral-850 border border-white/5 flex items-center gap-2 shadow-sm">
-                  <div className="flex gap-1.5 items-center">
-                    <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
-                    <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
-                    <span className="w-2 h-2 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
+                <div className="p-2.5 sm:p-4 rounded-2xl sm:rounded-3xl rounded-tl-none bg-neutral-850 border border-white/5 flex items-center gap-1.5 sm:gap-2 shadow-sm">
+                  <div className="flex gap-1 items-center">
+                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></span>
+                    <span className="w-1.5 h-1.5 bg-amber-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></span>
                   </div>
-                  <span className="text-xs text-gray-400 font-medium">ROXON AI javob bermoqda...</span>
+                  <span className="text-[10px] sm:text-xs text-gray-400 font-medium">Javob yozilmoqda...</span>
                 </div>
               </div>
             )}
@@ -759,12 +896,12 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
 
           {/* Quick preset cards on mobile devices */}
           {starters.length > 0 && (
-            <div className="lg:hidden px-4 py-2 border-t border-white/5 flex gap-2 overflow-x-auto bg-neutral-950/60 shrink-0">
+            <div className="lg:hidden px-3 py-1.5 border-t border-white/5 flex gap-1.5 overflow-x-auto bg-neutral-950/40 shrink-0 no-scrollbar">
               {starters.map((q, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(q.prompt)}
-                  className="whitespace-nowrap px-3 py-1.5 rounded-xl bg-neutral-900 border border-white/5 text-xs text-gray-300 font-medium shrink-0 active:scale-95"
+                  className="whitespace-nowrap px-2.5 py-1 rounded-lg bg-neutral-900 border border-white/5 text-[10px] text-gray-300 font-bold shrink-0 active:scale-95 hover:text-amber-500 active:bg-neutral-800 transition-colors"
                 >
                   {q.title}
                 </button>
@@ -773,36 +910,36 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
           )}
 
           {/* Primary Form Input Box */}
-          <div className="p-4 bg-neutral-950 border-t border-white/5 shrink-0">
+          <div className="p-2.5 sm:p-4 bg-neutral-950 border-t border-white/5 shrink-0">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSendMessage();
               }}
-              className="relative flex items-center bg-neutral-900 rounded-2xl border border-white/5 focus-within:border-amber-500/40 p-2 pl-4 transition-all"
+              className="relative flex items-center bg-neutral-900 rounded-xl sm:rounded-2xl border border-white/5 focus-within:border-amber-500/40 p-1.5 pl-3 sm:p-2 sm:pl-4 transition-all"
             >
               <input
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Savolingizni bu yerga yozing..."
+                placeholder="Xabar yozing..."
                 disabled={isLoading}
-                className="flex-1 bg-transparent border-none outline-none text-sm placeholder-gray-500 text-gray-205 pr-12 focus:ring-0 focus:outline-none"
+                className="flex-1 bg-transparent border-none outline-none text-xs sm:text-sm placeholder-gray-500 text-gray-205 pr-10 focus:ring-0 focus:outline-none"
               />
               <button
                 type="submit"
                 disabled={!inputMessage.trim() || isLoading}
-                className={`p-3 rounded-xl transition-all ${
+                className={`p-2 sm:p-3 rounded-lg sm:rounded-xl transition-all ${
                   inputMessage.trim() && !isLoading
                     ? 'bg-amber-500 text-neutral-950 hover:bg-amber-400 active:scale-95 hover:scale-105'
                     : 'bg-neutral-800 text-gray-600 cursor-not-allowed'
                 }`}
               >
-                <Send className="w-4 h-4" />
+                <Send className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               </button>
             </form>
-            <p className="text-[10px] text-center text-gray-550 mt-2">
-              Maslahatchi bilan savob-javoblar shaxsiy hisoblanadi va xavfsiz kanallar orqali himoyalangan.
+            <p className="text-[9px] text-center text-gray-650 mt-1.5">
+              ROXON AI ba'zida yanglishishi mumkin. Muhim ma'lumotlarni tekshirib oling.
             </p>
           </div>
         </div>
