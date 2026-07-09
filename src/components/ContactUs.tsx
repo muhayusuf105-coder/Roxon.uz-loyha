@@ -46,7 +46,7 @@ export function ContactUs() {
       <div className="absolute inset-0 z-0">
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-8PpZm42F3fco_OyCTw51L9McDwQ7sRfsR3Jr4KTD0sPJp_45VJz7P02qA2eLRl_lBGy_P1iXZtNYdt75I4RTARndwipqSIgd7zxOaU8t4lf5RMfuTfMTDse9Cerld_ISg4R5zlXwnnh-pbkW-6ojyV4sYy3g57ZuW0M5TI-jMmM62VIiV0UIDGghVAaTRRETuCersuC8ieuZUCzevtMo8__A1_a-cB1Ya3t6pLUGe2jcQzSmlftRg_uNVnv75zKtU3ks0_bm4bM"
-          alt="ROXON Tashkent Office Location Map Background"
+          alt="NEXORA Tashkent Office Location Map Background"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover filter grayscale opacity-25 scale-102 transition-all duration-1000 select-none"
         />
@@ -96,7 +96,7 @@ export function ContactUs() {
               </div>
               <div className="min-w-0 w-full">
                 <p className="text-[8px] sm:text-xs font-bold text-gray-400 mb-0.5 uppercase tracking-wider">Telegram</p>
-                <a href="https://t.me/roxon_uz_support" target="_blank" rel="noopener noreferrer" className="text-[8px] sm:text-xs md:text-sm font-bold text-amber-500 hover:underline block truncate">
+                <a href="https://t.me/nexora_uz_support" target="_blank" rel="noopener noreferrer" className="text-[8px] sm:text-xs md:text-sm font-bold text-amber-500 hover:underline block truncate">
                   @support
                 </a>
               </div>

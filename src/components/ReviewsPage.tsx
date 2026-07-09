@@ -116,7 +116,7 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
             Sizning fikringiz – barcha muvaffaqiyatimiz asosi
           </h1>
           <p className="text-sm text-gray-400 max-w-2xl leading-relaxed">
-            Biz ROXON uskunalari va xizmat ko'rsatish darajasi bo'yicha har bir mijozning fikrini diqqat bilan o'rganamiz. Fikringizni qoldiring va sifatni yanada takomillashtirishga hissa qo'shing.
+            Biz NEXORA uskunalari va xizmat ko'rsatish darajasi bo'yicha har bir mijozning fikrini diqqat bilan o'rganamiz. Fikringizni qoldiring va sifatni yanada takomillashtirishga hissa qo'shing.
           </p>
         </div>
 
@@ -145,7 +145,7 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
             </div>
 
             <p className="text-xs text-gray-500 leading-relaxed mt-6 pt-6 border-t border-white/5">
-              Ushbu reyting ROXON professional asboblarini sotib olgan haqiqiy foydalanuvchilarning sharhlariga asoslangan.
+              Ushbu reyting NEXORA professional asboblarini sotib olgan haqiqiy foydalanuvchilarning sharhlariga asoslangan.
             </p>
           </div>
 
@@ -180,7 +180,7 @@ export function ReviewsPage({ onBackToStore, reviews, onAddReview, userName, onN
           {/* Prompt card action for writing feedback */}
           <div className="bg-gradient-to-br from-amber-500/10 to-neutral-900 border border-amber-500/10 rounded-3xl p-6 md:p-8 flex flex-col justify-between">
             <div>
-              <span className="text-xs bg-amber-500/20 text-amber-400 px-3 py-1 border border-amber-500/20 rounded-full font-bold uppercase tracking-wider inline-block mb-3">ROXON BONUS TIZIMI</span>
+              <span className="text-xs bg-amber-500/20 text-amber-400 px-3 py-1 border border-amber-500/20 rounded-full font-bold uppercase tracking-wider inline-block mb-3">NEXORA BONUS TIZIMI</span>
               <h3 className="text-base font-extrabold text-white mb-2">Samimiy fikr uchun sovg'a!</h3>
               <p className="text-xs text-gray-400 leading-relaxed mb-4">
                 Sizning fikringiz biz uchun juda ham qimmatli. Sharh qoldirgan har bir foydalanuvchiga keyingi buyurtmalarida bepul yetkazib berish hamda 300 000 so'm bonus beriladi.

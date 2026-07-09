@@ -19,7 +19,7 @@ export function Hero({ onExploreProducts, onAboutClick }: HeroProps) {
         <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-transparent to-neutral-950/30 z-10" />
         <img
           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyCoWv4rYMQmOOvtbR4AcUEqCeLV5uezlUty7yFKbgBCWxnIuiab7yyr9VHio7s0ioUyAVCgS9sejY0W9-hjm8_YwiQakF_rH5Y-w-C4ceLlhgKTSnhEAdh0inpx10eAt5zYzoqPq7am2THK8JauQyoMiSWg-K2NDcFSObVzKmHsLCdbH2n5Z08nnDz8UOrJqK2QBtZRK0z0L0AAzkblLG6M8msj2kk0i87USgPg-ofN5GM6ky1ioVEJPNV50cANzo-E-cGrFO5cM"
-          alt="Roxon Industrial Tools and Generators Backdrop"
+          alt="Nexora Industrial Tools and Generators Backdrop"
           referrerPolicy="no-referrer"
           className="w-full h-full object-cover opacity-60"
         />
@@ -35,7 +35,7 @@ export function Hero({ onExploreProducts, onAboutClick }: HeroProps) {
 
           {/* Heading */}
           <h1 className="text-xl sm:text-3xl md:text-4xl lg:text-6xl font-black text-white mb-2 sm:mb-6 leading-tight tracking-tight">
-            Roxon – Kuchli <br className="hidden sm:inline" />
+            Nexora – Kuchli <br className="hidden sm:inline" />
             <span className="text-amber-500 relative inline-block">
               texnikalar
               <span className="absolute bottom-1 left-0 w-full h-1 bg-amber-500/30 rounded" />

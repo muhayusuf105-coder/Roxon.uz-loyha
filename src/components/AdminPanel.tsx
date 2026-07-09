@@ -79,7 +79,7 @@ export function AdminPanel({ onBackToStore, orders, onUpdateOrderStatus, onDelet
           <div className="flex items-center gap-1.5 sm:gap-2 overflow-hidden">
             <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-500 animate-ping shrink-0" />
             <span className="text-[9px] sm:text-xs bg-amber-500/10 text-amber-500 border border-amber-500/20 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md font-black tracking-wider sm:tracking-widest font-mono truncate">
-              ROXON ADMIN
+              NEXORA ADMIN
             </span>
           </div>
         </div>
@@ -88,7 +88,7 @@ export function AdminPanel({ onBackToStore, orders, onUpdateOrderStatus, onDelet
         <div className="flex items-center gap-2 sm:gap-3 shrink-0">
           <div className="hidden md:flex flex-col text-right">
             <span className="text-xs font-bold text-white">Administrator</span>
-            <span className="text-[10px] text-gray-500 font-mono">info@roxon.uz</span>
+            <span className="text-[10px] text-gray-500 font-mono">info@nexora.uz</span>
           </div>
           <button
             onClick={onLogoutAdmin}
@@ -660,7 +660,7 @@ export function AdminPanel({ onBackToStore, orders, onUpdateOrderStatus, onDelet
 
       {/* Footer system details */}
       <footer className="bg-neutral-900 border-t border-white/5 py-4 text-center text-xs text-gray-500 font-mono">
-        <p>© 2026 ROXON Professional Hardware. Barcha huquqlar himoyalangan. SSL-Shifrlash xavfsizligi.</p>
+        <p>© 2026 NEXORA Professional Hardware. Barcha huquqlar himoyalangan. SSL-Shifrlash xavfsizligi.</p>
       </footer>
     </div>
   );

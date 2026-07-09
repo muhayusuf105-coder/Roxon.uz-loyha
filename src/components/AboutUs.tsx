@@ -22,7 +22,7 @@ export function AboutUs({ onLearnMore }: AboutUsProps) {
           
           <img
             src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNAt2UsaWf0ItfGWZ43-Nq-f0w8k8e7v2fN6TObu81Yaxa9lWlvR8vT1_F8TzJwVhDXEVarg5d6ozCiI2d4Zyen2EBb0ky42oPRxd4crb3E-ujzpD18mqhq6BMEER0BGgI82T6RYqzYcOKe-RtbBKVK3aRZP4dAiaNDS4EceWiP52vokH_rAZCukrHgwZTXbwXq1KQ1mpVM7qMpQ0ZJgerzCIQA-6bPvZidEpmisGWnr_nwCYqHZqHqvDdN-7EOkl6Qeuo6wYIWxs"
-            alt="ROXON Professional Engineer Inspecting Orange Generator"
+            alt="NEXORA Professional Engineer Inspecting Orange Generator"
             referrerPolicy="no-referrer"
             className="rounded-lg sm:rounded-3xl relative z-10 shadow-2xl border border-white/10 w-full object-cover aspect-[4/3] sm:aspect-auto"
           />
@@ -60,7 +60,7 @@ export function AboutUs({ onLearnMore }: AboutUsProps) {
 
           <p className="text-[8.5px] min-[370px]:text-[10.5px] sm:text-sm md:text-base text-gray-300 leading-normal sm:leading-relaxed">
             <span className="inline sm:hidden">Uzun yillik tajribaga ega yetakchi sanoat uskunalari brendi.</span>
-            <span className="hidden sm:inline">ROXON o'n yildan ortiq vaqt davomida O'zbekiston bozorida yuqori sifatli sanoat uskunalarini yetkazib bermoqda. Bizning mahsulotlarimiz eng og'ir qurilish sharoitlarida ham benuqson ishlash uchun maxsus mo'ljallangan va xalqaro talablarga javob beradi.</span>
+            <span className="hidden sm:inline">NEXORA o'n yildan ortiq vaqt davomida O'zbekiston bozorida yuqori sifatli sanoat uskunalarini yetkazib bermoqda. Bizning mahsulotlarimiz eng og'ir qurilish sharoitlarida ham benuqson ishlash uchun maxsus mo'ljallangan va xalqaro talablarga javob beradi.</span>
           </p>
 
           <p className="text-[8.5px] min-[370px]:text-[10.5px] sm:text-sm md:text-base text-gray-450 leading-normal sm:leading-relaxed hidden sm:block">

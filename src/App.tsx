@@ -68,7 +68,7 @@ export default function App() {
   // Load cart, session and orders data on mount
   useEffect(() => {
     // 1. Restore Cart
-    const savedCart = localStorage.getItem('roxon_cart_items');
+    const savedCart = localStorage.getItem('nexora_cart_items');
     if (savedCart) {
       try {
         setCartItems(JSON.parse(savedCart));
@@ -78,7 +78,7 @@ export default function App() {
     }
 
     // 2. Restore User Session
-    const savedSession = localStorage.getItem('roxon_user_session');
+    const savedSession = localStorage.getItem('nexora_user_session');
     if (savedSession) {
       try {
         const decoded = JSON.parse(savedSession);
@@ -92,7 +92,7 @@ export default function App() {
     }
 
     // 3. Restore Orders (seed initial demo orders if none are present)
-    const savedOrders = localStorage.getItem('roxon_orders');
+    const savedOrders = localStorage.getItem('nexora_orders');
     if (savedOrders) {
       try {
         setOrders(JSON.parse(savedOrders));
@@ -134,14 +134,14 @@ export default function App() {
         }
       ];
       setOrders(initialSeed);
-      localStorage.setItem('roxon_orders', JSON.stringify(initialSeed));
+      localStorage.setItem('nexora_orders', JSON.stringify(initialSeed));
     }
   }, []);
 
   // Sync cart and session persistency
   const saveCartToStorage = (items: CartItem[]) => {
     setCartItems(items);
-    localStorage.setItem('roxon_cart_items', JSON.stringify(items));
+    localStorage.setItem('nexora_cart_items', JSON.stringify(items));
   };
 
   // Notification flash helper
@@ -159,7 +159,7 @@ export default function App() {
     if (sectionId === 'ai-chat') {
       if (!userSession) {
         setCurrentPage('login');
-        triggerNotification("ROXON AI bilan bog'lanish va savol berish uchun avval tizimga kiting!");
+        triggerNotification("NEXORA AI bilan bog'lanish va savol berish uchun avval tizimga kiting!");
         window.scrollTo({ top: 0, behavior: 'instant' });
         return;
       }
@@ -284,7 +284,7 @@ export default function App() {
 
     const updatedOrders = [newOrder, ...orders];
     setOrders(updatedOrders);
-    localStorage.setItem('roxon_orders', JSON.stringify(updatedOrders));
+    localStorage.setItem('nexora_orders', JSON.stringify(updatedOrders));
 
     // Clear shopping cart on successful transaction
     saveCartToStorage([]);
@@ -295,7 +295,7 @@ export default function App() {
   const handleLoginSuccess = (name: string, email: string, phone: string = '+998 90 955 88 11', isAdmin: boolean = false) => {
     const session = { name, email, phone, isAdmin };
     setUserSession(session);
-    localStorage.setItem('roxon_user_session', JSON.stringify(session));
+    localStorage.setItem('nexora_user_session', JSON.stringify(session));
     
     if (isAdmin) {
       setCurrentPage('admin');
@@ -307,7 +307,7 @@ export default function App() {
 
   const handleLogout = () => {
     setUserSession(null);
-    localStorage.removeItem('roxon_user_session');
+    localStorage.removeItem('nexora_user_session');
     setCurrentPage('store');
     triggerNotification(`Tizimdan chiqdingiz.`);
   };
@@ -316,14 +316,14 @@ export default function App() {
   const handleUpdateOrderStatus = (orderId: string, newStatus: AppOrder['status']) => {
     const updated = orders.map((o) => (o.id === orderId ? { ...o, status: newStatus } : o));
     setOrders(updated);
-    localStorage.setItem('roxon_orders', JSON.stringify(updated));
+    localStorage.setItem('nexora_orders', JSON.stringify(updated));
     triggerNotification(`Buyurtma #${orderId} holati "${newStatus}" ga o'zgartirildi.`);
   };
 
   const handleDeleteOrder = (orderId: string) => {
     const updated = orders.filter((o) => o.id !== orderId);
     setOrders(updated);
-    localStorage.setItem('roxon_orders', JSON.stringify(updated));
+    localStorage.setItem('nexora_orders', JSON.stringify(updated));
     triggerNotification(`Buyurtma #${orderId} o'chirildi.`);
   };
 
@@ -431,7 +431,7 @@ export default function App() {
           onUpdateProfile={(name, email, phone) => {
             const session = { name, email, phone };
             setUserSession(session);
-            localStorage.setItem('roxon_user_session', JSON.stringify(session));
+            localStorage.setItem('nexora_user_session', JSON.stringify(session));
             triggerNotification(`Profil ma'lumotlari muvaffaqiyatli yangilandi.`);
           }}
           currentUser={userSession ? { name: userSession.name, email: userSession.email, phone: userSession.phone || '', isAdmin: userSession.isAdmin || false } : undefined}

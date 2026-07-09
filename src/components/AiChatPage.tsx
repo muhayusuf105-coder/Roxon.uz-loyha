@@ -35,7 +35,7 @@ interface AiChatPageProps {
 export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
   // 1. Multiple Chat Sessions from LocalStorage (Maximum 10)
   const [sessions, setSessions] = useState<ChatSession[]>(() => {
-    const saved = localStorage.getItem('roxon_ai_sessions');
+    const saved = localStorage.getItem('nexora_ai_sessions');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -54,7 +54,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
           {
             id: 'welcome',
             role: 'assistant',
-            content: `Assalomu alaykum${userName ? `, ${userName}` : ''}! 🛠️\n\nMen **ROXON** kompaniyasining professional sun'iy intellekt maslahatchisiman. Sizga sanoat elektr asboblari, generator quvvatini hisoblash, suv nasoslari yoki qurilish texnikasi bo'yicha qanday amaliy va foydali maslahat kerak?\n\nMenga quyidagicha savollar berishingiz mumkin:\n- *"Menga generator kVt quvvatini hisoblab bering."*\n- *"FlowMaster P-30 nasosi qanday quvvatga ega?"*\n- *"Drel Ultra Drill X-200 kafolati qancha?"*`,
+            content: `Assalomu alaykum${userName ? `, ${userName}` : ''}! 🛠️\n\nMen **NEXORA** kompaniyasining professional sun'iy intellekt maslahatchisiman. Sizga sanoat elektr asboblari, generator quvvatini hisoblash, suv nasoslari yoki qurilish texnikasi bo'yicha qanday amaliy va foydali maslahat kerak?\n\nMenga quyidagicha savollar berishingiz mumkin:\n- *"Menga generator kVt quvvatini hisoblab bering."*\n- *"FlowMaster P-30 nasosi qanday quvvatga ega?"*\n- *"Drel Ultra Drill X-200 kafolati qancha?"*`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
           }
         ],
@@ -64,7 +64,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
   });
 
   const [activeSessionId, setActiveSessionId] = useState<string>(() => {
-    const savedActive = localStorage.getItem('roxon_ai_active_session_id');
+    const savedActive = localStorage.getItem('nexora_ai_active_session_id');
     if (savedActive) {
       return savedActive;
     }
@@ -73,7 +73,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
 
   // 2. Starter Prompts from LocalStorage (Customizable)
   const [starters, setStarters] = useState<StarterQuestion[]>(() => {
-    const saved = localStorage.getItem('roxon_ai_starters');
+    const saved = localStorage.getItem('nexora_ai_starters');
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
@@ -93,12 +93,12 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       },
       {
         title: "🛠️ Kafolat va Servis",
-        prompt: "Roxon uskunalariga necha oy kafolat beriladi va sotuvdan keyingi servis tizimi qanday ishlaydi?",
+        prompt: "Nexora uskunalariga necha oy kafolat beriladi va sotuvdan keyingi servis tizimi qanday ishlaydi?",
         description: "Qoidalar bilan tanishish"
       },
       {
         title: "📦 Tavsiyalar olish",
-        prompt: "ROXON Ultra Drill X-200 professional drelining qanday ustunlik jihatlari bor va narxi qancha?",
+        prompt: "NEXORA Ultra Drill X-200 professional drelining qanday ustunlik jihatlari bor va narxi qancha?",
         description: "Drel xususiyatlari"
       }
     ];
@@ -117,15 +117,15 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
 
   // Sync to Storage
   useEffect(() => {
-    localStorage.setItem('roxon_ai_sessions', JSON.stringify(sessions));
+    localStorage.setItem('nexora_ai_sessions', JSON.stringify(sessions));
   }, [sessions]);
 
   useEffect(() => {
-    localStorage.setItem('roxon_ai_active_session_id', activeSessionId);
+    localStorage.setItem('nexora_ai_active_session_id', activeSessionId);
   }, [activeSessionId]);
 
   useEffect(() => {
-    localStorage.setItem('roxon_ai_starters', JSON.stringify(starters));
+    localStorage.setItem('nexora_ai_starters', JSON.stringify(starters));
   }, [starters]);
 
   // Find currently active session and fallback
@@ -161,7 +161,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
         {
           id: 'welcome_' + Date.now(),
           role: 'assistant',
-          content: `Assalomu alaykum! Yangi suhbatga xush kelibsiz. Sanoat asboblari va ROXON mahsulotlari haqida so'rang yoki mavzulardan birini tanlang.`,
+          content: `Assalomu alaykum! Yangi suhbatga xush kelibsiz. Sanoat asboblari va NEXORA mahsulotlari haqida so'rang yoki mavzulardan birini tanlang.`,
           timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
       ],
@@ -181,7 +181,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       const resetMsg: Message = {
         id: 'welcome_' + Date.now(),
         role: 'assistant',
-        content: `Suhbat tozalab yuborildi. Menga sanoat doirasidagi elektr sohasidagi va ROXON uskunalaridagi har qanday qiziqtirgan texnik savolingizni berishingiz mumkin!`,
+        content: `Suhbat tozalab yuborildi. Menga sanoat doirasidagi elektr sohasidagi va NEXORA uskunalaridagi har qanday qiziqtirgan texnik savolingizni berishingiz mumkin!`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setSessions([{
@@ -310,7 +310,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
       const resetMsg: Message = {
         id: 'welcome_' + Date.now(),
         role: 'assistant',
-        content: `Suhbat tozalab yuborildi. Sanoat asboblari va ROXON mahsulotlari haqida so'rang!`,
+        content: `Suhbat tozalab yuborildi. Sanoat asboblari va NEXORA mahsulotlari haqida so'rang!`,
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setSessions(prev => prev.map(s => {
@@ -585,7 +585,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
             </div>
             <div className="overflow-hidden">
               <div className="flex items-center gap-1">
-                <h1 className="text-[10px] min-[370px]:text-xs sm:text-sm font-black tracking-wide text-gray-100 truncate">ROXON AI</h1>
+                <h1 className="text-[10px] min-[370px]:text-xs sm:text-sm font-black tracking-wide text-gray-100 truncate">NEXORA AI</h1>
                 <span className="text-[7px] sm:text-[9px] bg-amber-500/15 text-amber-400 px-1 py-0.2 sm:px-1.5 sm:py-0.5 rounded-full font-bold uppercase tracking-wider border border-amber-500/10 shrink-0">EXPERT</span>
               </div>
             </div>
@@ -939,7 +939,7 @@ export function AiChatPage({ onBackToStore, userName }: AiChatPageProps) {
               </button>
             </form>
             <p className="text-[9px] text-center text-gray-650 mt-1.5">
-              ROXON AI ba'zida yanglishishi mumkin. Muhim ma'lumotlarni tekshirib oling.
+              NEXORA AI ba'zida yanglishishi mumkin. Muhim ma'lumotlarni tekshirib oling.
             </p>
           </div>
         </div>

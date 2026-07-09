@@ -113,7 +113,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
       // Hidden admin check for signup
       const isUserAdmin = 
         email.trim().toLowerCase() === 'ybegimqulov01@gmail.com' || 
-        email.trim().toLowerCase() === 'admin@roxon.uz';
+        email.trim().toLowerCase() === 'admin@nexora.uz';
 
       onLoginSuccess(fullName, email, phone, isUserAdmin);
     } else {
@@ -130,7 +130,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
       // Hidden admin check for login (allows instant login for specified emails)
       const isUserAdmin = 
         email.trim().toLowerCase() === 'ybegimqulov01@gmail.com' || 
-        email.trim().toLowerCase() === 'admin@roxon.uz';
+        email.trim().toLowerCase() === 'admin@nexora.uz';
 
       const userName = isUserAdmin ? 'Administrator' : (email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1));
       const userPhone = isUserAdmin 
@@ -154,7 +154,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
       total: '2 450 000 UZS',
       status: 'Yetkazilmoqda',
       statusColor: 'text-blue-400 bg-blue-500/10 border-blue-500/20',
-      item: 'Roxon Ultra Drill X-200 Drel-shurup buragich',
+      item: 'Nexora Ultra Drill X-200 Drel-shurup buragich',
       itemsCount: 1,
       step: 3 // Out for delivery
     },
@@ -164,7 +164,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
       total: '4 120 000 UZS',
       status: 'Yetkazib berilgan',
       statusColor: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20',
-      item: 'Roxon FlowMaster P-30 Suv nasosi',
+      item: 'Nexora FlowMaster P-30 Suv nasosi',
       itemsCount: 1,
       step: 4 // Delivered
     }
@@ -181,7 +181,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
           <ArrowLeft className="w-4 h-4" />
           <span>Do'kon sahifasiga</span>
         </button>
-        <span className="text-sm font-black tracking-widest text-amber-500">ROXON PORTAL</span>
+        <span className="text-sm font-black tracking-widest text-amber-500">NEXORA PORTAL</span>
       </div>
 
       <div className="flex-1 flex items-center justify-center p-6 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.06),rgba(255,255,255,0))]">
@@ -198,7 +198,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
                   </div>
                   <div>
                     <h3 className="text-sm font-black text-gray-200">{currentUser.name}</h3>
-                    <span className="text-[10px] text-amber-500 font-bold tracking-wider uppercase">ROXON VIP a'zosi</span>
+                    <span className="text-[10px] text-amber-500 font-bold tracking-wider uppercase">NEXORA VIP a'zosi</span>
                   </div>
                 </div>
 
@@ -474,12 +474,12 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
             
             <div className="text-center mb-6">
               <h1 className="text-xl font-black text-gray-100 tracking-tight">
-                {isSignUp ? "Roxon Portalda hisob yaratish" : "Tizimga kirish"}
+                {isSignUp ? "Nexora Portalda hisob yaratish" : "Tizimga kirish"}
               </h1>
               <p className="text-xs text-gray-450 mt-1.5 font-medium">
                 {isSignUp 
                   ? "Xaridlar tarixi va VIP keshbek tizimidan foydalanish uchun ro'yxatdan o'ting" 
-                  : "Roxon shaxsiy kabinetiga xavfsiz ulanish oynasi"
+                  : "Nexora shaxsiy kabinetiga xavfsiz ulanish oynasi"
                 }
               </p>
             </div>
@@ -577,7 +577,7 @@ export function LoginPage({ onBackToStore, onLoginSuccess, onLogout, currentUser
 
             <div className="mt-6 pt-4 border-t border-white/5 text-center text-xs">
               <span className="text-gray-450 font-medium">
-                {isSignUp ? "Roxonda hisobingiz bormi? " : "Roxonda hisobingiz yo'qmi? "}
+                {isSignUp ? "Nexorada hisobingiz bormi? " : "Nexorada hisobingiz yo'qmi? "}
               </span>
               <button
                 onClick={() => {

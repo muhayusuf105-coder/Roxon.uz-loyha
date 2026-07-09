@@ -43,7 +43,7 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
             }}
             className="text-[10px] min-[370px]:text-xs sm:text-2xl font-black text-amber-500 hover:text-amber-400 transition-colors tracking-tighter"
           >
-            ROXON
+            NEXORA
           </a>
           <p className="text-[7px] min-[370px]:text-[8.5px] sm:text-sm text-gray-500 leading-normal">
             Industrial uskunalar va elektr asboblar do'koni. Sifat va ishonch.
@@ -198,7 +198,7 @@ export function Footer({ onCategoryFilter, onNavigate }: FooterProps) {
       {/* Copyright notes */}
       <div className="border-t border-white/5 py-8 text-center px-6">
         <p className="text-xs text-gray-550 leading-loose">
-          © 2024 ROXON.uz Industrial Solutions. Barcha huquqlar himoyalangan.
+          © 2024 NEXORA.uz Industrial Solutions. Barcha huquqlar himoyalangan.
         </p>
       </div>
     </footer>

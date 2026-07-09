@@ -1,6 +1,6 @@
 {
-  "name": "ROXON",
-  "description": "Sanoat darajasidagi elektr instrumentlar, generatorlar va suv nasoslari markazi - ROXON.",
+  "name": "NEXORA",
+  "description": "Sanoat darajasidagi elektr instrumentlar, generatorlar va suv nasoslari markazi - NEXORA.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

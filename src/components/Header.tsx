@@ -36,7 +36,7 @@ export function Header({
   const navItems = [
     { id: 'home', label: 'Bosh sahifa' },
     { id: 'products', label: 'Mahsulotlar' },
-    { id: 'ai-chat', label: 'ROXON AI ✦' },
+    { id: 'ai-chat', label: 'NEXORA AI ✦' },
     { id: 'about', label: 'Biz haqimizda' },
     { id: 'reviews', label: 'Mijozlar fikri' },
     { id: 'contact', label: 'Bog\'lanish' }
@@ -56,7 +56,7 @@ export function Header({
             onClick={(e) => handleLinkClick('home', e)}
             className="text-lg sm:text-2xl font-black tracking-tighter text-amber-500 hover:text-amber-400 transition-colors"
           >
-            ROXON
+            NEXORA
           </a>
           
           {/* Desktop Navigation Link Tabs */}

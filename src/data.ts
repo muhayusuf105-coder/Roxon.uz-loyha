@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
 export const PRODUCTS: Product[] = [
   {
     id: '1',
-    name: 'Roxon Ultra Drill X-200',
+    name: 'Nexora Ultra Drill X-200',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 2450000,
@@ -59,7 +59,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '3',
-    name: 'Roxon FlowMaster P-30',
+    name: 'Nexora FlowMaster P-30',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 4120000,
@@ -101,7 +101,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '5',
-    name: 'Roxon Concrete Mixer XM-180',
+    name: 'Nexora Concrete Mixer XM-180',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 7500000,
@@ -122,7 +122,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '6',
-    name: 'Roxon Heavy Jackhammer H-65',
+    name: 'Nexora Heavy Jackhammer H-65',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 3900000,
@@ -161,7 +161,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '8',
-    name: 'Roxon Drill Bit Set King-12',
+    name: 'Nexora Drill Bit Set King-12',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 380000,
@@ -180,7 +180,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '9',
-    name: 'Roxon Rotary Hammer Drill RH-28',
+    name: 'Nexora Rotary Hammer Drill RH-28',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1750000,
@@ -200,7 +200,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '10',
-    name: 'Roxon Inverter Generator 2.2kW',
+    name: 'Nexora Inverter Generator 2.2kW',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 6200000,
@@ -221,7 +221,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '11',
-    name: 'Roxon Deep Well Pump Neptun-100',
+    name: 'Nexora Deep Well Pump Neptun-100',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 3450000,
@@ -241,7 +241,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '12',
-    name: 'Roxon Laser Level 3D Green',
+    name: 'Nexora Laser Level 3D Green',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1550000,
@@ -262,7 +262,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '13',
-    name: 'Roxon Plate Compactor PC-90',
+    name: 'Nexora Plate Compactor PC-90',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 8900000,
@@ -283,7 +283,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '14',
-    name: 'Roxon Screwdriver Set 45-in-1',
+    name: 'Nexora Screwdriver Set 45-in-1',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 290000,
@@ -302,7 +302,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '15',
-    name: 'Roxon Electric Chain Saw CS-400',
+    name: 'Nexora Electric Chain Saw CS-400',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1950000,
@@ -323,7 +323,7 @@ export const PRODUCTS: Product[] = [
   // ADDING 35 MORE HIGH QUALITY DETAILED PRODUCTS TO REACH 50 TOTAL
   {
     id: '16',
-    name: 'Roxon Air Compressor AC-50',
+    name: 'Nexora Air Compressor AC-50',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 2850000,
@@ -343,7 +343,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '17',
-    name: 'Roxon Professional Welder ARC-250',
+    name: 'Nexora Professional Welder ARC-250',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1650000,
@@ -364,7 +364,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '18',
-    name: 'Roxon Electric Paint Spray SP-400',
+    name: 'Nexora Electric Paint Spray SP-400',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 490000,
@@ -384,7 +384,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '19',
-    name: 'Roxon Circular Saw CS-185',
+    name: 'Nexora Circular Saw CS-185',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1100000,
@@ -404,7 +404,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '20',
-    name: 'Roxon Electric Jigsaw JS-85',
+    name: 'Nexora Electric Jigsaw JS-85',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 780000,
@@ -424,7 +424,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '21',
-    name: 'Roxon Heavy Dual Bench Grinder BG-150',
+    name: 'Nexora Heavy Dual Bench Grinder BG-150',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 650000,
@@ -443,7 +443,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '22',
-    name: 'Roxon Gasoline Water Pump WP-50',
+    name: 'Nexora Gasoline Water Pump WP-50',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 2950000,
@@ -464,7 +464,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '23',
-    name: 'Roxon Submersible Sewage Pump SP-750',
+    name: 'Nexora Submersible Sewage Pump SP-750',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 1850000,
@@ -483,7 +483,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '24',
-    name: 'Roxon Self-Priming Jet Pump Jet-100',
+    name: 'Nexora Self-Priming Jet Pump Jet-100',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 1350000,
@@ -503,7 +503,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '25',
-    name: 'Roxon Heavy Petrol Generator 7.5kW SG-8500',
+    name: 'Nexora Heavy Petrol Generator 7.5kW SG-8500',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 9800000,
@@ -525,7 +525,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '26',
-    name: 'Roxon Petrol Generator 3.0kW SG-3500',
+    name: 'Nexora Petrol Generator 3.0kW SG-3500',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 4800000,
@@ -545,7 +545,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '27',
-    name: 'Roxon Portable Inverter Generator 1.0kW',
+    name: 'Nexora Portable Inverter Generator 1.0kW',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 3850000,
@@ -565,7 +565,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '28',
-    name: 'Roxon Smart Battery Charger BC-30',
+    name: 'Nexora Smart Battery Charger BC-30',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 450000,
@@ -584,7 +584,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '29',
-    name: 'Roxon Premium Socket Wrench Set 82-pcs',
+    name: 'Nexora Premium Socket Wrench Set 82-pcs',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 890000,
@@ -604,7 +604,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '30',
-    name: 'Roxon Laser Distance Meter LDM-80',
+    name: 'Nexora Laser Distance Meter LDM-80',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 420000,
@@ -623,7 +623,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '31',
-    name: 'Roxon Demolition Hammer DH-95',
+    name: 'Nexora Demolition Hammer DH-95',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 5200000,
@@ -643,7 +643,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '32',
-    name: 'Roxon High Pressure Washer PW-150',
+    name: 'Nexora High Pressure Washer PW-150',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 2100000,
@@ -663,7 +663,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '33',
-    name: 'Roxon Premium Heat Gun HG-2000',
+    name: 'Nexora Premium Heat Gun HG-2000',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 360000,
@@ -682,7 +682,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '34',
-    name: 'Roxon Electronic Wood Router RT-12',
+    name: 'Nexora Electronic Wood Router RT-12',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1680000,
@@ -701,7 +701,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '35',
-    name: 'Roxon Multi-Tool Cordless MT-12',
+    name: 'Nexora Multi-Tool Cordless MT-12',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 850000,
@@ -720,7 +720,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '36',
-    name: 'Roxon Heavy Tile Cutter TC-800',
+    name: 'Nexora Heavy Tile Cutter TC-800',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1050000,
@@ -739,7 +739,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '37',
-    name: 'Roxon Deep Well Pump Neptun-150',
+    name: 'Nexora Deep Well Pump Neptun-150',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 4950000,
@@ -759,7 +759,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '38',
-    name: 'Roxon High Flow Centrifugal Pump CP-200',
+    name: 'Nexora High Flow Centrifugal Pump CP-200',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 3600000,
@@ -778,7 +778,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '39',
-    name: 'Roxon Pressure Control Switch PC-10',
+    name: 'Nexora Pressure Control Switch PC-10',
     category: 'pumps',
     categoryLabel: 'Suv nasoslari',
     price: 250000,
@@ -797,7 +797,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '40',
-    name: 'Roxon Professional Electric Hoist EH-500',
+    name: 'Nexora Professional Electric Hoist EH-500',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 3200000,
@@ -818,7 +818,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '41',
-    name: 'Roxon Concrete Vibrator CV-1500',
+    name: 'Nexora Concrete Vibrator CV-1500',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 1950000,
@@ -837,7 +837,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '42',
-    name: 'Roxon Double Dual Wheelbarrow WB-120',
+    name: 'Nexora Double Dual Wheelbarrow WB-120',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 480000,
@@ -856,7 +856,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '43',
-    name: 'Roxon Portable Gas Generator 5.5kW GS-5500',
+    name: 'Nexora Portable Gas Generator 5.5kW GS-5500',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 8200000,
@@ -876,7 +876,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '44',
-    name: 'Roxon Pure Sine-Wave Inverter 3.0kW',
+    name: 'Nexora Pure Sine-Wave Inverter 3.0kW',
     category: 'generators',
     categoryLabel: 'Generatorlar',
     price: 3200000,
@@ -895,7 +895,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '45',
-    name: 'Roxon Digital Multimeter Pro DM-90',
+    name: 'Nexora Digital Multimeter Pro DM-90',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 280000,
@@ -914,7 +914,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '46',
-    name: 'Roxon Heavy Duty Tool Bag TB-20',
+    name: 'Nexora Heavy Duty Tool Bag TB-20',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 240000,
@@ -933,7 +933,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '47',
-    name: 'Roxon Heavy Wall Chaser WC-150',
+    name: 'Nexora Heavy Wall Chaser WC-150',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 2250000,
@@ -954,7 +954,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '48',
-    name: 'Roxon Petrol Chainsaw SG-5200',
+    name: 'Nexora Petrol Chainsaw SG-5200',
     category: 'tools',
     categoryLabel: 'Elektr instrumentlar',
     price: 1550000,
@@ -973,7 +973,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '49',
-    name: 'Roxon Electromagnetic Drill MD-40',
+    name: 'Nexora Electromagnetic Drill MD-40',
     category: 'machinery',
     categoryLabel: 'Qurilish texnikalari',
     price: 9400000,
@@ -994,7 +994,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: '50',
-    name: 'Roxon Platform Digital Scale DS-300',
+    name: 'Nexora Platform Digital Scale DS-300',
     category: 'accessories',
     categoryLabel: 'Aksessuarlar',
     price: 750000,
@@ -1021,7 +1021,7 @@ export const INITIAL_REVIEWS: Review[] = [
     authorInitials: 'AA',
     role: 'Xususiy tadbirkor',
     rating: 5,
-    text: "Roxon generatorini sotib olganimdan beri uydagi va kafedagi svet o'chish muammolari to'liq unutilgan. Sifatiga gap bo'lishi mumkin emas, har qanday ob-havoda ishonchli ishlaydi.",
+    text: "Nexora generatorini sotib olganimdan beri uydagi va kafedagi svet o'chish muammolari to'liq unutilgan. Sifatiga gap bo'lishi mumkin emas, har qanday ob-havoda ishonchli ishlaydi.",
     date: '12.04.2026'
   },
   {
